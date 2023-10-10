@@ -1,11 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios  from "../libs/http";
+
+
+
 function Section() {
 
+
+    const [transaction_id, settransaction_id] = useState([])
+
     async function getTransactionId (){
-        const data = await axios.get("/cache") 
-        console.log(data)
+        const data = await axios.get("/cache")
+        settransaction_id(data.data)
+       
     }
+
+
 
     useEffect(()=>{
         getTransactionId()
@@ -168,9 +177,12 @@ function Section() {
       <div className="container">
       <h1>API Calls
         <select id="apiCallsDropdown" className="rounded-dropdown">
-          <option value="apiCall1">API Call 1</option>
-          <option value="apiCall2">API Call 2</option>
-          {/* Add more API call options here */}
+            {
+                transaction_id?.map((transaction_id,index)=>{
+                    return (<option key ={index} value="apiCall1">{transaction_id}</option>)
+                })
+            }
+          
         </select>
       </h1>
       <div className="payload-container">
