@@ -36,3 +36,120 @@
     transform: rotate(360deg);
   }
 }
+
+/* styles.css */
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.payload-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.payload-list {
+  max-height: calc(100vh - 150px); /* Set a maximum height for both divs */
+  overflow-y: auto; /* Add vertical scrollbar when content exceeds max height */
+}
+
+.api-info {
+  max-height: 844px; /* Set a maximum height for the container */
+  overflow-y: auto; /* Add vertical scrollbar when content exceeds max height */
+  width: 45%; /* Adjust the width as needed */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.payload-list {
+  width: 25%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+  padding:10px;
+  border-top:1px solid rgba(0, 0, 0, 0.142) ;
+}
+li:hover {
+  /* Increase margin-bottom on hover */
+  background-color:rgba(13, 2, 24, 0.067);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Add a box shadow on hover */
+ 
+}
+
+.payload-button {
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.api-info {
+  width: 63%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  overflow-x: auto; /* Add horizontal scrollbar if content overflows */
+}
+
+.api-info h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+  white-space: nowrap; /* Prevent line breaks within h2 */
+}
+
+.api-info pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: monospace;
+}
+#payloadData{
+ 
+  text-align: left; /* Align text to the right */
+ 
+}
