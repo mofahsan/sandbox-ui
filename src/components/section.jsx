@@ -1,4 +1,17 @@
+import { useEffect } from "react";
+import axios  from "../libs/http";
 function Section() {
+
+    async function getTransactionId (){
+        const data = await axios.get("/cache") 
+        console.log(data)
+    }
+
+    useEffect(()=>{
+        getTransactionId()
+    },[])
+
+
   const jsonData = {
         
     
