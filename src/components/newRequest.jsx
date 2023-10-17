@@ -74,7 +74,7 @@ else{
 
 
   const generateHeader = async()=>{
-    const response =  await axios.post('http://localhost:3001/createHeader',editorData.Summary)
+    const response =  await axios.post('https://fis-seller-staging.ondc.org/createHeader',editorData.Summary)
     editorData.Header=JSON.stringify({Authorization:response.headers.authorization})
     seteditorData(editorData)
    }
