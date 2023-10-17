@@ -41,7 +41,7 @@ const handleSend=async()=>{
 
   header.headers={...header.headers,'Content-Type': 'application/json'}
 
-const response =  await axios1.post(`http://localhost:4000${selectedOptionCall}`,editorData.Summary,header)
+const response =  await axios1.post(`http://fis-buyer-staging.ondc.org/api${selectedOptionCall}`,editorData.Summary,header)
 setStatusCode(response.status)
 console.log("42",response.status)
 if(response.status===200){ //update api calls if request sent successfully
@@ -77,6 +77,7 @@ else{
     const response =  await axios.post('https://fis-seller-staging.ondc.org/createHeader',editorData.Summary)
     editorData.Header=JSON.stringify({Authorization:response.headers.authorization})
     seteditorData(editorData)
+    console.log(editorData)
    }
     const toggleDropdown = () => {
       setIsDropdownOpen(!isDropdownOpen);
