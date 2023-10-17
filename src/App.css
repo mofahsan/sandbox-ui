@@ -1,115 +1,209 @@
 
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
-  margin: 0;
-  padding: 0;
-  overflow: auto;
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .payload-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .api-info {
+    
+    /* border: 1px solid #ccc; */
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); */
+  }
+
+  .payload-list {
+    /* display: flex; */
+    min-width: 35%;
+    max-height: 75vh;
+    min-height: 676px;
+    /* max-height: 75vh; */
+    overflow: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+
+  h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  ul {
+    display:flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding: 0;
+  }
+
+  button {
+    margin-bottom: 10px;
+    padding:10px;
+    border-top:1px solid rgba(0, 0, 0, 0.142) ;
+    text-align: left;
+    border-style: none;
+  }
+  button:hover {
+    /* Increase margin-bottom on hover */
+    background-color:rgba(13, 2, 24, 0.067);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Add a box shadow on hover */
+  
+  }
+
+  .payload-button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .api-info {
+
+    width: 55%;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .api-info h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+    white-space: nowrap; /* Prevent line breaks within h2 */
+  }
+
+  .api-info pre {
+
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: monospace;
+  }
+  #payloadData {
+    margin: 0;
+    min-height: 641px;
+
+    max-height: 641px;
+    overflow-y: auto; /* Enable horizontal scrolling */
+    overflow-x: auto; /* Enable horizontal scrolling */
+
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    text-align: left;
+    border-radius: 4px;
+    white-space: pre;
+  /* overflow: auto; */
+  }
+
+  #editablePayloadData{
+    margin: 15px;
+    min-height: 390px;
+    /* display: inline-block; */
+    max-height: 390px;
+    width: 97%;
+    /* height: 95vh; */
+    /* overflow-y: auto; 
+    overflow-x: auto; 
+    border: 2px solid;*/
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    /* text-align: left; */
+    border-radius: 4px;
+    white-space: pre; 
+    text-indent: 35px;
+    
+  }
+
+
+  /* dropdown */
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
 }
 
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-}
-
-h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
+.dropbtn {
   text-align: center;
+  width:200px;
+    background-color: #3498db;
+    border-radius: 5px;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+.dropbtn:hover{
+  color: black;
+}
+.dropdown-content {
+    display: flex;
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    z-index: 1;
 }
 
-.payload-container {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+/* Style the dropdown links */
+.dropdown-content a {
+  background-color: gray;
+
+    display: block;
+    text-decoration: none;
+    color: #333;
 }
 
-.payload-list {
-  max-height: calc(100vh - 150px); /* Set a maximum height for both divs */
-  overflow-y: auto; /* Add vertical scrollbar when content exceeds max height */
+/* Change link color on hover */
+.dropdown-content a:hover {
+    background-color: gray;
+
 }
 
-.api-info {
-  max-height: 844px; /* Set a maximum height for the container */
-  overflow-y: auto; /* Add vertical scrollbar when content exceeds max height */
-  width: 45%; /* Adjust the width as needed */
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+/* Show the dropdown content when hovering over the dropdown button */
+.dropdown:hover .dropdown-content {
+    display: block;
+
+
+}
+.options{
+  padding: 10px;
+
 }
 
-.payload-list {
-  width: 25%;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+.list{
+  padding: 6px;
 }
 
-h2 {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  margin-bottom: 10px;
-  padding:10px;
-  border-top:1px solid rgba(0, 0, 0, 0.142) ;
-}
-li:hover {
-  /* Increase margin-bottom on hover */
-  background-color:rgba(13, 2, 24, 0.067);
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Add a box shadow on hover */
- 
-}
-
-.payload-button {
-  background-color: #007BFF;
-  color: #fff;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.api-info {
-  width: 63%;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  overflow-x: auto; /* Add horizontal scrollbar if content overflows */
-}
-
-.api-info h2 {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  text-align: center;
-  white-space: nowrap; /* Prevent line breaks within h2 */
-}
-
-.api-info pre {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  font-family: monospace;
-}
-#payloadData{
- 
-  text-align: left; /* Align text to the right */
+.list:hover{
+  background-color: #ccc;
  
 }
