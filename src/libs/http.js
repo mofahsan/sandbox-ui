@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const globalConfig = {
-  baseURL: 'http://localhost:4000', // Replace with your API's base URL
+  baseURL: 'http://fis-buyer-staging.ondc.org/api', // Replace with your API's base URL
   timeout: 5000, // Adjust the timeout as needed
   headers: {
     'Content-Type': 'application/json',
