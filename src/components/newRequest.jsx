@@ -71,6 +71,13 @@ else{
 
 
   }
+
+
+  const generateHeader = async()=>{
+    const response =  await axios.post('http://localhost:3001/createHeader',editorData.Summary)
+    editorData.Header=JSON.stringify({Authorization:response.headers.authorization})
+    seteditorData(editorData)
+   }
     const toggleDropdown = () => {
       setIsDropdownOpen(!isDropdownOpen);
     };
@@ -99,7 +106,7 @@ else{
 </div>
 
         </div>
-        <button style={{borderRadius:"10px"}}>Generate Header</button>
+        <button onClick={generateHeader} style={{borderRadius:"10px"}}>Generate Header</button>
    </RequestContainer>
    <PayloadContainerRequest>
     <RequestHeader>

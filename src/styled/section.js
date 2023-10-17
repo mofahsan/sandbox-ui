@@ -138,11 +138,9 @@ justify-content:center;
 width:100%;
 background-color:#fff;
 box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-border:1px solid #ccc;
 z-index:+1;
-max-height:600px;
+height:600px;
 // overflow:auto;
-background-image:none;
 // padding:20px;
 margin-top: 15px;
 `
@@ -150,7 +148,6 @@ margin-top: 15px;
 export const RequestContainer=styled.div`
 display:flex;
 align-items:center;
-border:2px solid red;
 
 gap:50px;
 position:absolute;
@@ -164,10 +161,9 @@ export const PayloadContainerRequest=styled.div`
 // display:flex;
 justify-content:center;
 top:100px;
-position:relative;
+position:absolute;
 width:1000px;
 box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-height:823px;
 flex-wrap:wrap;
 align-items:center; //check first
 `
