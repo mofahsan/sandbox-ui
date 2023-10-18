@@ -1,4 +1,7 @@
 import { useEffect, useState, useRef} from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import {env} from "../env"
+import 'react-toastify/dist/ReactToastify.css';
 
 import axios1 from "axios";
 
@@ -10,7 +13,8 @@ import {
 
 
 
-import {FilterConatiner,StyledButton,RequestHeader,PayloadContainerRequest,RequestContainer,ActionButton,HeaderContainer,NewRequestDiv,NewRequestbutton,NewRequestContainer,ActionButtonContainer,ActionDropDown,Action,TimeStamp,HeaderOptionButton,Option,StyledOptions,CustomSelect} from "../styled/section"
+import {FilterConatiner,StyledButton,RequestHeader,PayloadContainerRequest,RequestContainer,NewRequestContainer,ActionButtonContainer,ActionDropDown,Action,TimeStamp,HeaderOptionButton,Option,StyledOptions,CustomSelect} from "../styled/section"
+
 
 function NewRequset(){
 
@@ -21,10 +25,10 @@ function NewRequset(){
     const [showResponse,setshowResponse] =useState(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [selectedOptionCall, setSelectedOptionCall] = useState("Select Request Endpoint");
-   
-    const [editorData,seteditorData] = useState({Summary:'  {\n\t\n\t\n\t\n  }',Header:'  {\n\t\n\t\n\t\n  }'}) //Display data index
+  
+    const [editorData,seteditorData] = useState({Summary:"{}",Header:'  {}'}) //Display data index
 
- const options = ["/search", "/on_search", "/select","/on_select","/init","/on_init","/confirm","/on_confirm","/update","/on_update","/on_update","/status","/on_status"];
+const options = ["/search", "/select","/init","/confirm","/update","/status"];
 
 const [transaction_id_data, settransaction_id_data] = useState([]) //transactionId data
 
@@ -35,29 +39,42 @@ async function getTransactionIdData (transaction_id){
 const handleButtonClick = (buttonName) => {
 setActiveButton(buttonName);
 };
-const handleSend=async()=>{
-  setStatus("Pending");
-  const header = {headers:JSON.parse(editorData.Header)}
+const handleSend = async () => {
+try {
+const header = { headers: JSON.parse(editorData.Header) };
+header.headers = { ...header.headers, 'Content-Type': 'application/json' };
 
-  header.headers={...header.headers,'Content-Type': 'application/json'}
+const response = await axios1.post(`${env.sandBox}${selectedOptionCall}`, editorData.Summary, header);
+setStatusCode(response.status);
 
-const response =  await axios1.post(`http://fis-buyer-staging.ondc.org/api${selectedOptionCall}`,editorData.Summary,header)
-setStatusCode(response.status)
-console.log("42",response.status)
-if(response.status===200){ //update api calls if request sent successfully
-  setStatus("Sucess");
-  setshowResponse(response.data)
+if (response.status === 200) {
+  toast.success('Request sent successfully');
 
-  if(selectedOption!='FILTER BY TRANSACTION ID'){
-    getTransactionIdData(selectedOption)
+  setStatus('Success');
+  setshowResponse(response.data);
+
+  if (selectedOption !== 'FILTER BY TRANSACTION ID') {
+    getTransactionIdData(selectedOption);
   }
+} else {
+  setStatus('Error');
 }
-else{
-  setStatus("Error");
+} catch (error) {
+if (error.response && error.response.status === 400) {
+  // Handle a 400 Bad Request error here (if needed)
+  // You can choose to display a toast message or take other actions
+} else {
+  toast.error('An error occurred.');
+}
+}
+};
 
-}
+const generateHeader = async()=>{
+  const response =  await axios.post('https://fis-seller-staging.ondc.org/createHeader',editorData.Summary)
+  editorData.Header=JSON.stringify({Authorization:response.headers.authorization})
+  seteditorData(editorData)
+ }
 
-}
   const handleOptionSelect = (option) => {
 
     setSelectedOptionCall(option);
@@ -67,25 +84,19 @@ else{
     editorData[`${activeButton}`]=e.target.textContent
     // JSON.parse(editorData)
     seteditorData(editorData)
-   
+  
 
 
   }
-
-
-  const generateHeader = async()=>{
-    const response =  await axios.post('https://fis-seller-staging.ondc.org/createHeader',editorData.Summary)
-    editorData.Header=JSON.stringify({Authorization:response.headers.authorization})
-    seteditorData(editorData)
-    console.log(editorData)
-   }
     const toggleDropdown = () => {
       setIsDropdownOpen(!isDropdownOpen);
     };
     return (<>
     <NewRequestContainer >
-   <RequestContainer>
-     <div style={{display:"flex",justifyContent:"space-between",margin:"10px"}}>
+      
+  <RequestContainer>
+    
+    <div style={{display:"flex",justifyContent:"space-between",margin:"10px"}}>
         <div class="dropdown">
         
         <button class="dropbtn" onClick={toggleDropdown}>  {selectedOptionCall}</button>
@@ -107,9 +118,9 @@ else{
 </div>
 
         </div>
-        <button onClick={generateHeader} style={{borderRadius:"10px"}}>Generate Header</button>
-   </RequestContainer>
-   <PayloadContainerRequest>
+        <button style={{borderRadius:"10px"}} onClick={generateHeader}>Generate Header</button>
+  </RequestContainer>
+  <PayloadContainerRequest>
     <RequestHeader>
       <div style={{display:"flex",gap:"30px"}}>
       <StyledButton   active={activeButton === 'Summary'}
@@ -123,16 +134,19 @@ else{
         <div>Status Code:{statusCode}</div>
       </div>
     </RequestHeader>
-         <div>
-         <pre id="editablePayloadData" contentEditable={true} onInput={handleEditor} key={activeButton} style={{maxHeight: "390px", overflow: "auto"}}>
-  {   activeButton === 'Response' ? JSON.stringify(showResponse, null, 2) : activeButton === 'Summary' ? JSON.stringify(JSON.parse(editorData.Summary), null, 2) : editorData.Header}
+        <div>
+        <pre id="editablePayloadData" contentEditable={true} onInput={handleEditor} key={activeButton} style={{maxHeight: "390px", overflow: "auto"}}>
+  {   activeButton === 'Response' ? JSON.stringify(showResponse, null, 2) : activeButton === 'Summary' ? editorData.Summary : editorData.Header}
 </pre>
 
 </div>
 
-     <button style={{position:"absolute",width:"130px",textAlign:"center",borderRadius:"3px",top:"520px",marginTop:"10px",right:"0px",backgroundColor:"#fff",border:"1px solid #ccc",marginRight:"25px"}} onClick={handleSend} >Send</button>
+    <button style={{position:"absolute",width:"130px",textAlign:"center",borderRadius:"3px",top:"520px",marginTop:"10px",right:"0px",backgroundColor:"#fff",border:"1px solid #ccc",marginRight:"25px"}}  onClick={
+  handleSend
+  // Replace 'anotherFunction' with the second function you want to call.
+} >Send</button>
     
-   </PayloadContainerRequest>
+  </PayloadContainerRequest>
 
     </NewRequestContainer>
     </>)

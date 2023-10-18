@@ -1,187 +1,186 @@
-import { useEffect, useState, useRef} from "react";
-
-import axios1 from "axios";
-
-
-import axios  from "../libs/http";
-import {
-  CopyOutlined 
-} from '@ant-design/icons';
+  import { useEffect, useState, useRef} from "react";
 
 
 
-import {FilterConatiner,StyledButton,RequestHeader,PayloadContainerRequest,RequestContainer,ActionButton,HeaderContainer,NewRequestDiv,NewRequestbutton,NewRequestContainer,ActionButtonContainer,ActionDropDown,Action,TimeStamp,HeaderOptionButton,Option,StyledOptions,CustomSelect} from "../styled/section"
+  import axios  from "../libs/http";
+  import {
+    CopyOutlined 
+  } from '@ant-design/icons';
 
 
-function Payload() {
-    // State declaration
+
+  import {FilterConatiner,StyledButton,RequestHeader,PayloadContainerRequest,RequestContainer,ActionButton,HeaderContainer,NewRequestDiv,NewRequestbutton,NewRequestContainer,ActionButtonContainer,ActionDropDown,Action,TimeStamp,HeaderOptionButton,Option,StyledOptions,CustomSelect} from "../styled/section"
 
 
-    const [activeButton, setActiveButton] = useState("Summary");
-    const [newRequestContainer,setnewRequestContainer]=useState('RequestTracer')
-    const [transaction_id, settransaction_id] = useState([])  //transactionId_list
-    const [transaction_id_data, settransaction_id_data] = useState([]) //transactionId data
-    const [formattedDataIndex,setformattedDataIndex] = useState([]) //Display data index
-    const [isOpen, setIsOpen] = useState(false); // transactionid dropdown open close
-    const [selectedOption, setSelectedOption] = useState(); //transaction id select display
-    const [editorData,seteditorData] = useState({Summary:'  {\n\t\n\t\n\t\n  }',Header:'  {\n\t\n\t\n\t\n  }'}) //Display data index
+  function Payload() {
+      // State declaration
 
 
-    const url = useRef()
-      
-    useEffect(()=>{
-      getTransactionId()
-      },[])
+      const [activeButton, setActiveButton] = useState("Summary");
+      const [newRequestContainer,setnewRequestContainer]=useState('RequestTracer')
+      const [transaction_id, settransaction_id] = useState([])  //transactionId_list
+      const [transaction_id_data, settransaction_id_data] = useState([]) //transactionId data
+      const [formattedDataIndex,setformattedDataIndex] = useState([]) //Display data index
+      const [isOpen, setIsOpen] = useState(false); // transactionid dropdown open close
+      const [selectedOption, setSelectedOption] = useState(); //transaction id select display
+      const [editorData,seteditorData] = useState({Summary:'  {\n\t\n\t\n\t\n  }',Header:'  {\n\t\n\t\n\t\n  }'}) //Display data index
 
-    // Api call to get transaction id list
-    async function getTransactionId (){
-        const data = await axios.get("/cache")
-        settransaction_id(data.data)
+
+      const url = useRef()
+        
+      useEffect(()=>{
+        getTransactionId()
+        },[])
+
+      // Api call to get transaction id list
+      async function getTransactionId (){
+          const data = await axios.get("/cache")
+          settransaction_id(data.data)
+      }
+    
+      // Api Call to get transaction data by /transactionid
+      async function getTransactionIdData (transaction_id){
+        const data = await axios.get("/cache?transactionid="+transaction_id)
+        settransaction_id_data(data.data)
     }
-   
-    // Api Call to get transaction data by /transactionid
-    async function getTransactionIdData (transaction_id){
-      const data = await axios.get("/cache?transactionid="+transaction_id)
-      settransaction_id_data(data.data)
-  }
 
 
 
-    // handle transactionid selection
-  
-    const handle_transactionId_select = (optionValue) => {
-      setSelectedOption(optionValue?.transaction);
-      setIsOpen(false);
-      setFilterText(optionValue?.transaction); // Set the selected option in the input field
-
-      getTransactionIdData(optionValue?.transaction)
-    };
-
-    //handle header/summary button click
-    const handleButtonClick = (buttonName) => {
-      setActiveButton(buttonName);
-    };
-
-  // handle api call click
-  const handleclick=(index,keyname)=>{
-    seteditorData({Summary:JSON.stringify(transaction_id_data[index]["data"],null, 2),Header:JSON.stringify(transaction_id_data[index]["header"],null, 2)})
-    setformattedDataIndex(index)
-    setActiveButton(keyname);
-  }
-
-  //new request button
-
-
-  //editor handle code
-  const handleEditor = (e)=>{
-    editorData[`${activeButton}`]=e.target.textContent
-    seteditorData(editorData)
-  }
-
-  //sending the request (send button)
-
-  const [filterText, setFilterText] = useState('');
-  
-
-  const handleInputClick = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const CallNewReqest=(containerName)=>{
-    setnewRequestContainer(containerName)
-  }
-
-    return (
-    <>
+      // handle transactionid selection
     
-      <FilterConatiner>
-        <div style={{fontFamily:"varr",display:"flex",alignItems:"center"}}>Transaction Id</div>
+      const handle_transactionId_select = (optionValue) => {
+        setSelectedOption(optionValue?.transaction);
+        setIsOpen(false);
+        setFilterText(optionValue?.transaction); // Set the selected option in the input field
 
-      <CustomSelect>
-      <input
-          type="text"
-          value={filterText}
-          placeholder="Filter by Transaction ID"
-          onChange={(e) => setFilterText(e.target.value)}
-          onClick={handleInputClick}
-          style={{width:"255px",padding:"5px",borderRadius:"2px solid #ccc"}}
-        />
-      {/* <div onClick={toggleDropdown_transactionid} style={{width:"330px"}}>{selectedOption}</div> */}
-      <StyledOptions isOpen={isOpen}>
-  {transaction_id
-    .filter((transaction) =>
-      transaction.includes(filterText)
-    )
-    .map((transaction, index) => (
-      <Option
-        key={index}
-        onClick={() => handle_transactionId_select({ transaction })}
-      >
-        {transaction}
-      </Option>
-    ))}
-</StyledOptions>
+        getTransactionIdData(optionValue?.transaction)
+      };
 
-    </CustomSelect>
-      </FilterConatiner>
+      //handle header/summary button click
+      const handleButtonClick = (buttonName) => {
+        setActiveButton(buttonName);
+      };
+
+    // handle api call click
+    const handleclick=(index,keyname)=>{
+      seteditorData({Summary:JSON.stringify(transaction_id_data[index]["data"],null, 2),Header:JSON.stringify(transaction_id_data[index]["header"],null, 2)})
+      setformattedDataIndex(index)
+      setActiveButton(keyname);
+    }
+
+    //new request button
 
 
+    //editor handle code
+    const handleEditor = (e)=>{
+      editorData[`${activeButton}`]=e.target.textContent
+      seteditorData(editorData)
+    }
 
+    //sending the request (send button)
 
-      <div className="payload-container">
-        <div className="payload-list">
-          <h2>Payload List</h2>
-          <ul id="payloadList" className="scrollable-list">
-  {!transaction_id_data.message &&
-    transaction_id_data?.map((element, index) => {
+    const [filterText, setFilterText] = useState('');
+    
+
+    const handleInputClick = () => {
+      setIsOpen(!isOpen);
+    };
+
+    const CallNewReqest=(containerName)=>{
+      setnewRequestContainer(containerName)
+    }
+
       return (
-        <ActionButton key={element.order} onClick={() => handleclick(index, "Summary")}>
-          <Action className="action">{element.action}</Action>
-          <TimeStamp className="timestamp">{new Date(element.timestamp).toLocaleDateString()} {new Date(element.timestamp).toLocaleTimeString()}</TimeStamp>
-        </ActionButton>
-      );
-    })}
-</ul>
-
-        </div>
-        <div className="api-info">
+      <>
       
-        
-      <HeaderContainer>
-      <HeaderOptionButton
-        active={activeButton === 'Summary'}
-        onClick={() => handleButtonClick('Summary')}
-        // disabled={formattedData.length?false:true}
-      >
-        Summary
-      </HeaderOptionButton>
-      <HeaderOptionButton
-        active={activeButton === 'Header'}
-        onClick={() => handleButtonClick('Header')}
-        // disabled={formattedData.length?false:true}
-      >
-        Header
-      </HeaderOptionButton>
-    
-    
-      <CopyOutlined  style={{fontSize:"30px"}} onClick={() => {navigator.clipboard.writeText(editorData[`${activeButton}`])}}/>
-      {/* <HeaderOptionButton style={{marginLeft:"150px",width:"130px"}} onClick={()=>{
-        handleNewRequest()
-      }}>New Request</HeaderOptionButton> */}
-    </HeaderContainer>
-        <div >
-        <pre id="payloadData"   onInput={handleEditor} key={activeButton}
->
-          {activeButton=="Summary"?editorData.Summary:editorData.Header}
-          </pre>
-        </div>
-        
-        </div>
-      </div>
-    {/* </div> */}
-    </>
-    );
-  }
+        <FilterConatiner>
+          <div style={{fontFamily:"varr",display:"flex",alignItems:"center"}}>Transaction Id</div>
+
+        <CustomSelect>
+        <input
+            type="text"
+            value={filterText}
+            placeholder="Filter by Transaction ID"
+            onChange={(e) => setFilterText(e.target.value)}
+            onClick={handleInputClick}
+            style={{width:"255px",padding:"5px",borderRadius:"2px solid #ccc"}}
+          />
+        {/* <div onClick={toggleDropdown_transactionid} style={{width:"330px"}}>{selectedOption}</div> */}
+        <StyledOptions isOpen={isOpen}>
+    {transaction_id
+      .filter((transaction) =>
+        transaction.includes(filterText)
+      )
+      .map((transaction, index) => (
+        <Option
+          key={index}
+          onClick={() => handle_transactionId_select({ transaction })}
+        >
+          {transaction}
+        </Option>
+      ))}
+  </StyledOptions>
+
+      </CustomSelect>
+        </FilterConatiner>
 
 
-export default Payload
+
+
+        <div className="payload-container">
+          <div className="payload-list">
+            <h2>Payload List</h2>
+            <ul id="payloadList" className="scrollable-list">
+    {!transaction_id_data.message &&
+      transaction_id_data?.map((element, index) => {
+        return (
+          <ActionButton key={element.order} onClick={() => handleclick(index, "Summary")}>
+            <Action className="action">{element.action}</Action>
+            <TimeStamp className="timestamp">{new Date(element.timestamp).toLocaleDateString()} {new Date(element.timestamp).toLocaleTimeString()}</TimeStamp>
+          </ActionButton>
+        );
+      })}
+  </ul>
+
+          </div>
+          <div className="api-info">
+        
+          
+        <HeaderContainer>
+        <HeaderOptionButton
+          active={activeButton === 'Summary'}
+          onClick={() => handleButtonClick('Summary')}
+          // disabled={formattedData.length?false:true}
+        >
+          Summary
+        </HeaderOptionButton>
+        <HeaderOptionButton
+          active={activeButton === 'Header'}
+          onClick={() => handleButtonClick('Header')}
+          // disabled={formattedData.length?false:true}
+        >
+          Header
+        </HeaderOptionButton>
+      
+      
+        <CopyOutlined  style={{fontSize:"30px"}} onClick={() => {navigator.clipboard.writeText(editorData[`${activeButton}`])}}/>
+        {/* <HeaderOptionButton style={{marginLeft:"150px",width:"130px"}} onClick={()=>{
+          handleNewRequest()
+        }}>New Request</HeaderOptionButton> */}
+      </HeaderContainer>
+          <div >
+          <pre id="payloadData"   onInput={handleEditor} key={activeButton}
+  >
+            {activeButton=="Summary"?editorData.Summary:editorData.Header}
+            </pre>
+          </div>
+          
+          </div>
+        </div>
+      {/* </div> */}
+      </>
+      );
+    }
+
+
+  export default Payload
