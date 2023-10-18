@@ -40,6 +40,10 @@ setActiveButton(buttonName);
 };
 const handleSend = async () => {
 try {
+if(selectedOptionCall==="Select Request Endpoint"){
+  toast.error("Please select api")
+  return
+}
 const header = { headers: JSON.parse(editorData.Header) };
 header.headers = { ...header.headers, 'Content-Type': 'application/json' };
 
