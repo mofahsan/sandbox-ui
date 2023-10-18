@@ -5,7 +5,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import axios1 from "axios";
 
-
 import axios  from "../libs/http";
 import {
   CopyOutlined 
@@ -71,8 +70,11 @@ if (error.response && error.response.status === 400) {
 
 const generateHeader = async()=>{
   const response =  await axios.post(env.mockServer+'/createHeader',editorData.Summary)
-  editorData.Header=JSON.stringify({Authorization:response.headers.authorization})
-  seteditorData(editorData)
+  if(response){
+    editorData.Header=JSON.stringify({Authorization:response.headers.authorization})
+    seteditorData(editorData)
+    toast.success("Header generated")
+  }
  }
 
   const handleOptionSelect = (option) => {
