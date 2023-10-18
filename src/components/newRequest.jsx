@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef} from "react";
 import { ToastContainer, toast } from 'react-toastify';
-import {env} from "../env"
+import {env} from "../env/env"
 import 'react-toastify/dist/ReactToastify.css';
 
 import axios1 from "axios";
@@ -33,8 +33,8 @@ const options = ["/search", "/select","/init","/confirm","/update","/status"];
 const [transaction_id_data, settransaction_id_data] = useState([]) //transactionId data
 
 async function getTransactionIdData (transaction_id){
-  const data = await axios.get("/cache?transactionid="+transaction_id)
-  settransaction_id_data(data.data)
+    const data = await axios.get("/cache?transactionid="+transaction_id)
+    settransaction_id_data(data.data)
 }
 const handleButtonClick = (buttonName) => {
 setActiveButton(buttonName);
@@ -70,7 +70,7 @@ if (error.response && error.response.status === 400) {
 };
 
 const generateHeader = async()=>{
-  const response =  await axios.post('https://fis-seller-staging.ondc.org/createHeader',editorData.Summary)
+  const response =  await axios.post(env.mockServer+'/createHeader',editorData.Summary)
   editorData.Header=JSON.stringify({Authorization:response.headers.authorization})
   seteditorData(editorData)
  }

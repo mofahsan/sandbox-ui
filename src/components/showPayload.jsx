@@ -34,9 +34,9 @@
 
       // Api call to get transaction id list
       async function getTransactionId (){
-          const data = await axios.get("/cache")
+                  const data = await axios.get("/cache")
           settransaction_id(data.data)
-      }
+              }
     
       // Api Call to get transaction data by /transactionid
       async function getTransactionIdData (transaction_id){
@@ -107,8 +107,7 @@
           />
         {/* <div onClick={toggleDropdown_transactionid} style={{width:"330px"}}>{selectedOption}</div> */}
         <StyledOptions isOpen={isOpen}>
-    {transaction_id
-      .filter((transaction) =>
+    {transaction_id?.filter((transaction) =>
         transaction.includes(filterText)
       )
       .map((transaction, index) => (
