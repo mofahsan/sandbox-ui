@@ -82,18 +82,20 @@ const generateHeader = async()=>{
  }
 
   const handleOptionSelect = (option) => {
-
     setSelectedOptionCall(option);
     setIsDropdownOpen(false);
   };
   const handleEditor = (e)=>{
-    editorData[`${activeButton}`]=e.target.textContent
-    // JSON.parse(editorData)
-    seteditorData(editorData)
-  
-
+    // if (e.key === "Enter") {
+    //   e.preventDefault(); // Prevent the default behavior (div creation)
+    //   document.execCommand("insertText", false, "\n"); // Insert a new line character
+    // } else{
+      editorData[`${activeButton}`]=e.currentTarget.innerText
+      seteditorData(editorData)
+    // }
 
   }
+
     const toggleDropdown = () => {
       setIsDropdownOpen(!isDropdownOpen);
     };
