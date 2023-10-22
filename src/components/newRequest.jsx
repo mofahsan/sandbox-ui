@@ -9,7 +9,7 @@ import axios  from "../libs/http";
 import {
   CopyOutlined 
 } from '@ant-design/icons';
-
+import { validateJson } from "../utils/utils";
 
 
 import {FilterConatiner,StyledButton,RequestHeader,PayloadContainerRequest,RequestContainer,NewRequestContainer,ActionButtonContainer,ActionDropDown,Action,TimeStamp,HeaderOptionButton,Option,StyledOptions,CustomSelect} from "../styled/section"
@@ -44,12 +44,16 @@ if(selectedOptionCall==="Select Request Endpoint"){
   toast.error("Please select api")
   return
 }
+if(!validateJson(editorData.Summary || !validateJson(editorData.Header))){
+  toast.error("Json not valid")
+  return
+}
+
 const header = { headers: JSON.parse(editorData.Header) };
 header.headers = { ...header.headers, 'Content-Type': 'application/json' };
 
 const response = await axios1.post(`${env.sandBox}${selectedOptionCall}`, editorData.Summary, header);
 setStatusCode(response.status);
-
 if (response.status === 200) {
   toast.success('Request sent successfully');
 
@@ -63,7 +67,8 @@ if (response.status === 200) {
   setStatus('Error');
 }
 } catch (error) {
-if (error.response && error.response.status === 400) {
+if (error.response && error.response.status != 200) {
+  toast.error(error.response.data)
   // Handle a 400 Bad Request error here (if needed)
   // You can choose to display a toast message or take other actions
 } else {
