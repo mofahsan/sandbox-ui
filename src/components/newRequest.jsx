@@ -73,7 +73,7 @@ if (error.response && error.response.status === 400) {
 };
 
 const generateHeader = async()=>{
-  const response =  await axios.post(env.mockServer+'/createHeader',editorData.Summary)
+  const response =  await axios.post(env.sandBox+'/createHeader',editorData.Summary)
   if(response){
     editorData.Header=JSON.stringify({Authorization:response.headers.authorization})
     seteditorData(editorData)
