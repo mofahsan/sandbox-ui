@@ -18,6 +18,7 @@
 
       const [activeButton, setActiveButton] = useState("Summary");
       const [newRequestContainer,setnewRequestContainer]=useState('RequestTracer')
+      const [activeButtonIndex, setActiveButtonIndex] = useState(null);
       const [transaction_id, settransaction_id] = useState([])  //transactionId_list
       const [transaction_id_data, settransaction_id_data] = useState([]) //transactionId data
       const [formattedDataIndex,setformattedDataIndex] = useState([]) //Display data index
@@ -34,9 +35,9 @@
 
       // Api call to get transaction id list
       async function getTransactionId (){
-                  const data = await axios.get("/cache")
+          const data = await axios.get("/cache")
           settransaction_id(data.data)
-              }
+      }
     
       // Api Call to get transaction data by /transactionid
       async function getTransactionIdData (transaction_id){
@@ -66,6 +67,7 @@
       seteditorData({Summary:JSON.stringify(transaction_id_data[index]["data"],null, 2),Header:JSON.stringify(transaction_id_data[index]["header"],null, 2)})
       setformattedDataIndex(index)
       setActiveButton(keyname);
+      setActiveButtonIndex(index); // Set the active button index
     }
 
     //new request button
@@ -133,7 +135,7 @@
     {!transaction_id_data.message &&
       transaction_id_data?.map((element, index) => {
         return (
-          <ActionButton key={element.order} onClick={() => handleclick(index, "Summary")}>
+          <ActionButton  key={element.order}   active={activeButtonIndex === index}  onClick={() => handleclick(index, "Summary")}    className="button" >
             <Action className="action">{element.action}</Action>
             <TimeStamp className="timestamp">{new Date(element.timestamp).toLocaleDateString()} {new Date(element.timestamp).toLocaleTimeString()}</TimeStamp>
           </ActionButton>
@@ -149,23 +151,19 @@
         <HeaderOptionButton
           active={activeButton === 'Summary'}
           onClick={() => handleButtonClick('Summary')}
-          // disabled={formattedData.length?false:true}
         >
           Summary
         </HeaderOptionButton>
         <HeaderOptionButton
           active={activeButton === 'Header'}
           onClick={() => handleButtonClick('Header')}
-          // disabled={formattedData.length?false:true}
         >
           Header
         </HeaderOptionButton>
       
       
         <CopyOutlined  style={{fontSize:"30px"}} onClick={() => {navigator.clipboard.writeText(editorData[`${activeButton}`])}}/>
-        {/* <HeaderOptionButton style={{marginLeft:"150px",width:"130px"}} onClick={()=>{
-          handleNewRequest()
-        }}>New Request</HeaderOptionButton> */}
+
       </HeaderContainer>
           <div >
           <pre id="payloadData"   onInput={handleEditor} key={activeButton}
@@ -176,7 +174,6 @@
           
           </div>
         </div>
-      {/* </div> */}
       </>
       );
     }

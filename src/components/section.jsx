@@ -26,23 +26,21 @@
 
 
 
-
     return(
       <div className="container">
         <NewRequestDiv>
             <NewRequestbutton  active={newRequestContainer === 'RequestTracer'}
             onClick={()=>{CallNewReqest('RequestTracer')}}>Request Tracer</NewRequestbutton>
 
-            {/* {newRequestContainer==='RequestTracer'} */}
             
             <NewRequestbutton onClick={()=>{CallNewReqest('NewRequest')}}  active={newRequestContainer === 'NewRequest'}>New Request</NewRequestbutton>
-            {/* {newRequestContainer === 'RequestTracer' ? ( <div></div>) : null}
-            {newRequestContainer === 'NewRequest' ? <NewRequset /> : null} */}
+
         </NewRequestDiv>
 
-        {newRequestContainer === 'RequestTracer'?<Payload/> : <NewRequset/>}
-        {/* <Payload/> */}
-        {/* <NewRequset/> */}
+        <div style={{display:newRequestContainer === 'RequestTracer'?'block':'none'}}> < Payload/> </div>
+        <div style={{display:newRequestContainer === 'NewRequest'?'block':'none'}}><NewRequset/></div>
+
+
 
       </div>
 

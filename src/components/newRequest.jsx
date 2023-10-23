@@ -32,8 +32,8 @@ const options = ["/search", "/select","/init","/confirm","/update","/status"];
 const [transaction_id_data, settransaction_id_data] = useState([]) //transactionId data
 
 async function getTransactionIdData (transaction_id){
-    const data = await axios.get("/cache?transactionid="+transaction_id)
-    settransaction_id_data(data.data)
+  const data = await axios.get("/cache?transactionid="+transaction_id)
+  settransaction_id_data(data.data)
 }
 const handleButtonClick = (buttonName) => {
 setActiveButton(buttonName);
@@ -80,8 +80,8 @@ if (error.response && error.response.status != 200) {
 const generateHeader = async()=>{
   const response =  await axios.post(env.sandBox+'/createHeader',editorData.Summary)
   if(response){
-    editorData.Header=JSON.stringify({Authorization:response.headers.authorization})
-    seteditorData(editorData)
+  editorData.Header=JSON.stringify({Authorization:response.headers.authorization})
+  seteditorData(editorData)
     toast.success("Header generated")
   }
  }
@@ -96,7 +96,7 @@ const generateHeader = async()=>{
     //   document.execCommand("insertText", false, "\n"); // Insert a new line character
     // } else{
       editorData[`${activeButton}`]=e.currentTarget.innerText
-      seteditorData(editorData)
+    seteditorData(editorData)
     // }
 
   }
@@ -148,13 +148,13 @@ const generateHeader = async()=>{
       </div>
     </RequestHeader>
         <div>
-        <pre id="editablePayloadData" contentEditable={true} onInput={handleEditor} key={activeButton} style={{maxHeight: "390px", overflow: "auto"}}>
+        <pre id="editablePayloadData" contentEditable={true} onInput={handleEditor} key={activeButton} style={{maxHeight: "390px",maxWidth:"952px", overflow: "auto"}}>
   {   activeButton === 'Response' ? JSON.stringify(showResponse, null, 2) : activeButton === 'Summary' ? editorData.Summary : editorData.Header}
 </pre>
 
 </div>
 
-    <button style={{position:"absolute",width:"130px",textAlign:"center",borderRadius:"3px",top:"520px",marginTop:"10px",right:"0px",backgroundColor:"#fff",border:"1px solid #ccc",marginRight:"25px"}}  onClick={
+    <button style={{position:"absolute",width:"130px",textAlign:"center",borderRadius:"3px",top:"520px",marginTop:"10px",right:"70px",backgroundColor:"#fff",border:"1px solid #ccc",marginRight:"25px"}}  onClick={
   handleSend
   // Replace 'anotherFunction' with the second function you want to call.
 } >Send</button>

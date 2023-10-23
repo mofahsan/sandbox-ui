@@ -74,7 +74,12 @@ display:flex;
 export const ActionButton=styled.button`
 display:flex;
 justify-content:space-between;
+box-shadow: ${(props) => (props.active ? 'rgba(0, 0, 0, 0.24) 0px 3px 8px;' : "none")};
+background-color:${(props)=>(props.active?'#808080b5':"none")};
+
 `
+
+
 export const Action=styled.div`
 `
 
@@ -165,7 +170,7 @@ position:absolute;
 width:1000px;
 box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 flex-wrap:wrap;
-align-items:center; //check first
+align-items:center; 
 `
 
 
@@ -177,7 +182,7 @@ align-items:center;
 justify-content:space-around;
 // position:absolute;
 height:80px;
-width:94%;
+max-width:94%;
 box-shadow: rgba(50, 50, 93, 0.25) 0px 5px 30px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 border-radius:2px;
 margin-left:28px;
@@ -185,7 +190,6 @@ margin-left:28px;
 `
 
 export const StyledButton = styled.button`
-  background: none;
   margin-top: 10px;
   border-radius: 8px;
   color: ${props => (props.active ? 'green' : 'black')};
