@@ -12,15 +12,14 @@
   import {FilterConatiner,StyledButton,RequestHeader,PayloadContainerRequest,RequestContainer,ActionButton,HeaderContainer,NewRequestDiv,NewRequestbutton,NewRequestContainer,ActionButtonContainer,ActionDropDown,Action,TimeStamp,HeaderOptionButton,Option,StyledOptions,CustomSelect} from "../styled/section"
 
 
-  function Payload() {
+  function Payload(props) {
       // State declaration
-
 
       const [activeButton, setActiveButton] = useState("Summary");
       const [newRequestContainer,setnewRequestContainer]=useState('RequestTracer')
       const [activeButtonIndex, setActiveButtonIndex] = useState(null);
       const [transaction_id, settransaction_id] = useState([])  //transactionId_list
-      const [transaction_id_data, settransaction_id_data] = useState([]) //transactionId data
+      const transaction_id_data = props.props.transaction_id_data //transactionId data
       const [formattedDataIndex,setformattedDataIndex] = useState([]) //Display data index
       const [isOpen, setIsOpen] = useState(false); // transactionid dropdown open close
       const [selectedOption, setSelectedOption] = useState(); //transaction id select display
@@ -39,13 +38,14 @@
           settransaction_id(data.data)
       }
     
-      // Api Call to get transaction data by /transactionid
-      async function getTransactionIdData (transaction_id){
-        const data = await axios.get("/cache?transactionid="+transaction_id)
-        settransaction_id_data(data.data)
-    }
+    //   // Api Call to get transaction data by /transactionid
+    //   async function getTransactionIdData (transaction_id){
+    //     const data = await axios.get("/cache?transactionid="+transaction_id)
+    //     settransaction_id_data(data.data)
+    // }
 
-
+    const getTransactionIdData = props.props.getTransactionIdData
+    
 
       // handle transactionid selection
     
@@ -53,7 +53,6 @@
         setSelectedOption(optionValue?.transaction);
         setIsOpen(false);
         setFilterText(optionValue?.transaction); // Set the selected option in the input field
-
         getTransactionIdData(optionValue?.transaction)
       };
 
@@ -132,7 +131,7 @@
           <div className="payload-list">
             <h2>Payload List</h2>
             <ul id="payloadList" className="scrollable-list">
-    {!transaction_id_data.message &&
+    {!transaction_id_data?.message &&
       transaction_id_data?.map((element, index) => {
         return (
           <ActionButton  key={element.order}   active={activeButtonIndex === index}  onClick={() => handleclick(index, "Summary")}    className="button" >
