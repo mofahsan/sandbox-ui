@@ -128,7 +128,7 @@
     min-height: 390px;
     /* display: inline-block; */
     max-height: 390px;
-    width: 97%;
+    max-width: 97%;
     /* height: 95vh; */
     /* overflow-y: auto; 
     overflow-x: auto; 
@@ -204,3 +204,18 @@
   background-color: #ccc;
  
 }
+
+:where(.css-dev-only-do-not-override-amq5gd).ant-dropdown .ant-dropdown-menu, :where(.css-dev-only-do-not-override-amq5gd).ant-dropdown-menu-submenu .ant-dropdown-menu {
+  margin-top: 18px;
+  position: absolute;
+  list-style-type: none;
+  background-color: #f0f0f0;
+  background-clip: padding-box;
+  border-radius: 8px;
+  outline: none;
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  align-items: center;
+width: 100px;
+}
+
+

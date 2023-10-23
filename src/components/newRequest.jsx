@@ -2,7 +2,8 @@ import { useEffect, useState, useRef} from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import {env} from "../env/env"
 import 'react-toastify/dist/ReactToastify.css';
-
+import { DownOutlined } from '@ant-design/icons';
+import { Dropdown, message, Space } from 'antd';
 import axios1 from "axios";
 
 import axios  from "../libs/http";
@@ -12,7 +13,8 @@ import {
 import { validateJson } from "../utils/utils";
 
 
-import {FilterConatiner,StyledButton,RequestHeader,PayloadContainerRequest,RequestContainer,NewRequestContainer,ActionButtonContainer,ActionDropDown,Action,TimeStamp,HeaderOptionButton,Option,StyledOptions,CustomSelect} from "../styled/section"
+
+import {DropdownContainer,StyledButton,RequestHeader,PayloadContainerRequest,RequestContainer,NewRequestContainer} from "../styled/section"
 
 
 function NewRequset(){
@@ -22,12 +24,10 @@ function NewRequset(){
     const [statusCode,setStatusCode]=useState()
     const [activeButton, setActiveButton] = useState("Summary");
     const [showResponse,setshowResponse] =useState(null)
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [selectedOptionCall, setSelectedOptionCall] = useState("Select Request Endpoint");
+    const [selectedOptionCall, setSelectedOptionCall] = useState("Select Endpoint");
   
     const [editorData,seteditorData] = useState({Summary:"{}",Header:'  {}'}) //Display data index
 
-const options = ["/search", "/select","/init","/confirm","/update","/status"];
 
 const [transaction_id_data, settransaction_id_data] = useState([]) //transactionId data
 
@@ -86,10 +86,6 @@ const generateHeader = async()=>{
   }
  }
 
-  const handleOptionSelect = (option) => {
-    setSelectedOptionCall(option);
-    setIsDropdownOpen(false);
-  };
   const handleEditor = (e)=>{
     // if (e.key === "Enter") {
     //   e.preventDefault(); // Prevent the default behavior (div creation)
@@ -101,37 +97,56 @@ const generateHeader = async()=>{
 
   }
 
-    const toggleDropdown = () => {
-      setIsDropdownOpen(!isDropdownOpen);
-    };
+  const items = [
+    {
+      label: '/search',
+      key: '/search',
+    },
+    {
+      label: '/select',
+      key: '/select',
+    },
+    {
+      label: '/init',
+      key: '/init',
+    },
+    {
+      label: '/confirm',
+      key: '/confirm',
+    },
+    {
+      label: '/support',
+      key: '/support',
+    },
+  ];
+  
+  const handleOption = (item) => {
+    console.log(item.key)
+    setSelectedOptionCall(item.key); // Update selectedOptionCall with the label of the selected item
+  };
+
     return (<>
     <NewRequestContainer >
       
   <RequestContainer>
-    
-    <div style={{display:"flex",justifyContent:"space-between",margin:"10px"}}>
-        <div class="dropdown">
-        
-        <button class="dropbtn" onClick={toggleDropdown}>  {selectedOptionCall}</button>
-        <div class="dropdown-content">
-      
-          <div> {isDropdownOpen && (
-            <ul className="options">
-              {options.map((option, index) => (
-                <li class="list" key={index} onClick={() => handleOptionSelect(option)}>
-                  {option}
-                </li>
-              ))}
-            
-            </ul>
-          )}</div>
-        
+  <DropdownContainer>
+            <Dropdown 
+              menu={{
+                items,
+                onClick: (item) => handleOption(item),
+              }}
+            >
+              <a onClick={(e) => e.preventDefault()}>
+                <Space style={{display:"flex",width:"150px",justifyContent:"space-around"}}>
+                  {selectedOptionCall}
+                  <DownOutlined />
+                </Space>
+              </a>
+            </Dropdown>
+          </DropdownContainer>
 
-        </div>
-</div>
-
-        </div>
-        <button style={{borderRadius:"10px"}} onClick={generateHeader}>Generate Header</button>
+ 
+        <button style={{borderRadius:"10px",marginBottom:"0"}} onClick={generateHeader}>Generate Header</button>
   </RequestContainer>
   <PayloadContainerRequest>
     <RequestHeader>
