@@ -10,6 +10,7 @@
 
 
   import {FilterConatiner,StyledButton,RequestHeader,PayloadContainerRequest,RequestContainer,ActionButton,HeaderContainer,NewRequestDiv,NewRequestbutton,NewRequestContainer,ActionButtonContainer,ActionDropDown,Action,TimeStamp,HeaderOptionButton,Option,StyledOptions,CustomSelect} from "../styled/section"
+import { toast } from "react-toastify";
 
 
   function Payload(props) {
@@ -161,7 +162,8 @@
         </HeaderOptionButton>
       
       
-        <CopyOutlined  style={{fontSize:"30px"}} onClick={() => {navigator.clipboard.writeText(editorData[`${activeButton}`])}}/>
+        <CopyOutlined  style={{fontSize:"30px"}} onClick={() => {navigator.clipboard.writeText(editorData[`${activeButton}`]) 
+      toast.success("Copied to clipboard")}}/>
 
       </HeaderContainer>
           <div >

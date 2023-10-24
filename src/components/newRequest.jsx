@@ -38,9 +38,12 @@ async function getTransactionIdData (transaction_id){
 const handleButtonClick = (buttonName) => {
 setActiveButton(buttonName);
 };
+
+
+
 const handleSend = async () => {
 try {
-if(selectedOptionCall==="Select Request Endpoint"){
+if(selectedOptionCall==="Select Endpoint"){
   toast.error("Please select api")
   return
 }
@@ -60,15 +63,15 @@ if (response.status === 200) {
   setStatus('Success');
   setshowResponse(response.data);
 
-  if (selectedOption !== 'FILTER BY TRANSACTION ID') {
-    getTransactionIdData(selectedOption);
-  }
 } else {
   setStatus('Error');
 }
 } catch (error) {
 if (error.response && error.response.status != 200) {
-  toast.error(error.response.data)
+  toast.error(JSON.stringify(error.response.data))
+  setStatus('Error');
+  setStatusCode(error.response.status);
+
   // Handle a 400 Bad Request error here (if needed)
   // You can choose to display a toast message or take other actions
 } else {
