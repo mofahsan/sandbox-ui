@@ -1,24 +1,22 @@
-  import { useEffect, useState, useRef} from "react";
+  import { useState, useRef} from "react";
 
-  import axios1 from "axios";
 
 
   import axios  from "../libs/http";
-  import {
-    CopyOutlined 
-  } from '@ant-design/icons';
-
+ 
   import Payload from "./showPayload";
   import NewRequset from "./newRequest";
 
 
-  import {FilterConatiner,StyledButton,RequestHeader,PayloadContainerRequest,RequestContainer,ActionButton,HeaderContainer,NewRequestDiv,NewRequestbutton,NewRequestContainer,ActionButtonContainer,ActionDropDown,Action,TimeStamp,HeaderOptionButton,Option,StyledOptions,CustomSelect} from "../styled/section"
+  import {NewRequestDiv,NewRequestbutton} from "../styled/section"
 
 
 
 
   function Section(){
     const [newRequestContainer,setRequestContainer]=useState('RequestTracer')
+    const [transaction_id, settransaction_id] = useState([])  //transactionId_list
+
     const [transaction_id_data, settransaction_id_data] = useState([]) //transactionId data
     let transactionid_variable = useRef();
 
@@ -31,9 +29,14 @@
     const CallNewReqest=(containerName)=>{ // RequestTracer || NewRequest
       setRequestContainer(containerName)
     }
+    async function getTransactionId (){
+      const data = await axios.get("/cache")
+      settransaction_id(data.data)
+  }
 
 
-
+  
+  
     return(
       <div className="container">
         <NewRequestDiv>
@@ -46,7 +49,7 @@
 
         </NewRequestDiv>
 
-        <div style={{display:newRequestContainer === 'RequestTracer'?'block':'none'}}> < Payload props={{getTransactionIdData:getTransactionIdData,transaction_id_data:transaction_id_data}} /> </div>
+        <div style={{display:newRequestContainer === 'RequestTracer'?'block':'none'}}> < Payload props={{getTransactionIdData:getTransactionIdData,transaction_id_data:transaction_id_data,getTransactionId:getTransactionId,transaction_id:transaction_id}} /> </div>
         <div style={{display:newRequestContainer === 'NewRequest'?'block':'none'}}><NewRequset/></div>
 
 

@@ -20,9 +20,6 @@ box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 
 
 export const CustomSelect = styled.div`
-/* box-shadow: 0px -25px 20px -20px rgba(0, 0, 0, 0.45); */
-
-/* border:2px solid red; */
   position: relative;
   border-radius:3px;  
   &:hover {
@@ -31,10 +28,12 @@ export const CustomSelect = styled.div`
 `;
 
 export const StyledOptions = styled.div`
-
+  border:2px solid red;
+max-height:350px;
+overflow:auto;
   display: ${(props) => (props.isOpen ? 'block' : 'none')};
   position: absolute;
-  top: 100%;
+  top: 36px;
   left: 0;
   width: 100%;
   background-color: #fff;
@@ -44,6 +43,7 @@ export const StyledOptions = styled.div`
 `;
 
 export const Option = styled.div`
+
   padding: 20px;
   cursor: pointer;
   &:hover {
@@ -112,7 +112,6 @@ display:flex;
 justify-content:space-around;
 align-items:center;
 height:35px;
-border:1px solid red;
 max-width:100%;
 border-radius:5px;
 border:1px solid #ccc;
@@ -121,8 +120,8 @@ padding:7px;
 export const NewRequestbutton=styled.button`
 z-index:+4;
 text-align:center;  
-margin-top:9px;
 width:200px;
+margin-top:10px;
 border-radius:8px;
 color: ${props => props.active ? 'green' : 'black'};
 
@@ -166,8 +165,9 @@ export const PayloadContainerRequest=styled.div`
 // display:flex;
 justify-content:center;
 top:100px;
-position:absolute;
+position:relative;
 width:1000px;
+height:500px;
 box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 flex-wrap:wrap;
 align-items:center; 
@@ -202,7 +202,6 @@ justify-content:center;
 background-color:#cccccc59;
 margin:10px;
 padding:10px;
-width:140px;  
 border-radius:10px;
 
 `

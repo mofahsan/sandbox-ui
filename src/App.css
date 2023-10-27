@@ -8,6 +8,7 @@
   }
 
   .container {
+    position: relative;
     max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
@@ -37,6 +38,7 @@
   }
 
   .payload-list {
+
     /* display: flex; */
     min-width: 35%;
     max-height: 75vh;
@@ -44,7 +46,7 @@
     /* max-height: 75vh; */
     overflow: auto;
     padding: 20px;
-    border: 1px solid #ccc;
+    /* border: 1px solid #ccc; */
     border-radius: 5px;
     background-color: #f9f9f9;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
@@ -65,7 +67,6 @@
 
   button {
     margin-bottom: 10px;
-    padding:12px;
     border-top:1px solid rgba(0, 0, 0, 0.142) ;
     text-align: left;
     border-style: none;
@@ -85,7 +86,7 @@
 
   .api-info {
 
-    width: 55%;
+    width: 62%;
     padding: 14px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -122,17 +123,13 @@
     white-space: pre;
   /* overflow: auto; */
   }
-
-  #editablePayloadData{
+  /* parent-child relationshipt(absolute-relative) */
+ #editablePayloadData{
+    position: relative;
     margin: 15px;
+    max-width: 930px;
     min-height: 390px;
-    /* display: inline-block; */
     max-height: 390px;
-    max-width: 97%;
-    /* height: 95vh; */
-    /* overflow-y: auto; 
-    overflow-x: auto; 
-    border: 2px solid;*/
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
     /* text-align: left; */
     border-radius: 4px;
@@ -206,7 +203,7 @@
 }
 
 :where(.css-dev-only-do-not-override-amq5gd).ant-dropdown .ant-dropdown-menu, :where(.css-dev-only-do-not-override-amq5gd).ant-dropdown-menu-submenu .ant-dropdown-menu {
-  margin-top: 8px;
+  margin-top: 18px;
   position: absolute;
   list-style-type: none;
   background-color: #f0f0f0;
@@ -219,3 +216,7 @@ width: 100px;
 }
 
 
+#anticon anticon-down{
+  border:2px sold red;
+  background-color: red;
+} 

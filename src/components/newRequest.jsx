@@ -1,15 +1,13 @@
-import { useEffect, useState, useRef} from "react";
-import { ToastContainer, toast } from 'react-toastify';
+import {  useState} from "react";
+import {  toast } from 'react-toastify';
 import {env} from "../env/env"
 import 'react-toastify/dist/ReactToastify.css';
 import { DownOutlined } from '@ant-design/icons';
-import { Dropdown, message, Space } from 'antd';
+import { Dropdown, Space } from 'antd';
 import axios1 from "axios";
 
 import axios  from "../libs/http";
-import {
-  CopyOutlined 
-} from '@ant-design/icons';
+
 import { validateJson } from "../utils/utils";
 
 
@@ -63,7 +61,7 @@ if (response.status === 200) {
   setStatus('Success');
   setshowResponse(response.data);
 
-} else {
+  } else {
   setStatus('Error');
 }
 } catch (error) {
@@ -166,7 +164,7 @@ const generateHeader = async()=>{
       </div>
     </RequestHeader>
         <div>
-        <pre id="editablePayloadData" contentEditable={true} onInput={handleEditor} key={activeButton} style={{maxHeight: "390px",maxWidth:"952px", overflow: "auto"}}>
+        <pre id="editablePayloadData" contentEditable={true} onInput={handleEditor} key={activeButton} style={{maxHeight: "390px", overflow: "auto"}}>
   {   activeButton === 'Response' ? JSON.stringify(showResponse, null, 2) : activeButton === 'Summary' ? editorData.Summary : editorData.Header}
 </pre>
 
