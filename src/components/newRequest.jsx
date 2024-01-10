@@ -119,6 +119,14 @@ const generateHeader = async()=>{
       label: '/support',
       key: '/support',
     },
+    {
+      label: '/status',
+      key: '/status',
+    },
+    {
+      label: '/update',
+      key: '/update',
+    },
   ];
   
   const handleOption = (item) => {
