@@ -32,7 +32,11 @@
     }
     async function getTransactionId (){
       const data = await axios.get("/cache")
-      settransaction_id(data.data)
+
+      // filter json mapper transaction id
+      const filteredTranscationId = data?.data?.filter(item => !item.startsWith("jm_"))
+
+      settransaction_id(filteredTranscationId)
   }
 
 

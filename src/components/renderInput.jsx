@@ -2,8 +2,6 @@ import { Controller } from "react-hook-form";
 import { FormFieldWrapper } from "../styled/renderInput.style";
 
 const RenderInput = ({ data, control, errors }) => {
-  console.log("errors", errors);
-
   const isJSON = (value) => {
     try {
       JSON.parse(value);
@@ -20,7 +18,7 @@ const RenderInput = ({ data, control, errors }) => {
         <Controller
           name={data.key}
           control={control}
-          defaultValue=""
+          defaultValue={data?.defaultValue || ""}
           rules={{ required: data.errorText }}
           render={({ field }) => (
             <>
@@ -43,9 +41,11 @@ const RenderInput = ({ data, control, errors }) => {
           render={({ field }) => (
             <>
               <select {...field}>
-                {data?.selectFields?.map((item) => {
-                  return <option value={item.value}>{item.key}</option>;
-                })}
+                {(data?.providedOptions || data?.defaultOptions)?.map(
+                  (item) => {
+                    return <option value={item.value}>{item.key}</option>;
+                  }
+                )}
               </select>
               {errors[data.key] && <p>{errors[data.key].message}</p>}
             </>
@@ -60,7 +60,7 @@ const RenderInput = ({ data, control, errors }) => {
         <Controller
           name={data.key}
           control={control}
-          defaultValue=""
+          defaultValue={JSON.stringify(data?.defaultValue, null, 2) || ""}
           rules={{
             required: data.errorText,
             validate: {

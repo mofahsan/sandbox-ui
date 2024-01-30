@@ -21,7 +21,12 @@ const PayloadMapper = () => {
     }
 
     if (currentStep === 2) {
-      return <RequestExecuter transactionId={transactionId} />;
+      return (
+        <RequestExecuter
+          transactionId={transactionId}
+          handleBack={() => setStep(1)}
+        />
+      );
     }
   };
 

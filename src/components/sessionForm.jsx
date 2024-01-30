@@ -9,7 +9,9 @@ import {
   Container,
   TransactionId,
 } from "../styled/sessionForm.style";
-
+import { toast } from "react-toastify";
+import { env } from "../env/env";
+import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { useEffect } from "react";
 
@@ -27,30 +29,50 @@ const SessionForm = ({ updateStep }) => {
   });
 
   useEffect(() => {
-    const sessionData = JSON.parse(localStorage.getItem("sessionData"));
-    if (sessionData) {
-      console.log("transcations", sessionData);
-      setTransactions(sessionData);
-    }
+    getSessions();
   }, []);
 
-  const handleSubmit = (e) => {
+  const getSessions = async () => {
+    try {
+      const header = {};
+      header.headers = {
+        ...header.headers,
+        "Content-Type": "application/json",
+      };
+
+      const res = await axios.get(`${env.sandBox}/cache`, header);
+
+      console.log("response", res.data);
+      setTransactions(res.data);
+    } catch (e) {
+      console.log("Error while fetching session data", e);
+      toast.error(JSON.stringify(e.response.data));
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
 
-    let sessionData = {};
     const transactiomId = uuidv4();
 
-    const localData = localStorage.getItem("sessionData");
+    try {
+      const header = {};
+      header.headers = {
+        ...header.headers,
+        "Content-Type": "application/json",
+      };
 
-    if (localData) {
-      sessionData = JSON.parse(localData);
+      await axios.post(
+        `${env.sandBox}/mapper/session`,
+        JSON.stringify({ ...formData, transaction_id: transactiomId }),
+        header
+      );
+      updateStep(2, transactiomId);
+    } catch (e) {
+      console.log("error while sending session request", e);
+      toast.error(JSON.stringify(e.response.data));
     }
-
-    sessionData[transactiomId] = { ...formData, transaction_id: transactiomId };
-
-    localStorage.setItem("sessionData", JSON.stringify(sessionData));
-    updateStep(2, transactiomId);
   };
 
   const handleInputChange = (e) => {
@@ -157,11 +179,13 @@ const SessionForm = ({ updateStep }) => {
         <div>
           {Object.entries(transcations).map((data) => {
             const [key, value] = data;
-            return (
-              <TransactionId onClick={() => updateStep(2, key)}>
-                {key}
-              </TransactionId>
-            );
+            const transactionId = value.substring(3);
+            if (value.startsWith("jm_"))
+              return (
+                <TransactionId onClick={() => updateStep(2, transactionId)}>
+                  {transactionId}
+                </TransactionId>
+              );
           })}
         </div>
       </div>

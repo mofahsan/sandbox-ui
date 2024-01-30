@@ -26,7 +26,6 @@ export const SendButton = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  align-self: end;
 
   &:hover {
     background-color: #45a049; /* Change the background color on hover */
@@ -44,6 +43,7 @@ export const ResponseField = styled.div`
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   padding: 10px 15px;
   background-color: gainsboro;
+  word-wrap: break-word;
 `;
 
 export const TitleContainer = styled.div`
@@ -59,6 +59,14 @@ export const TitleContainer = styled.div`
 
 export const TitleHeading = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  & > h2 {
+    padding: 0px;
+    margin: 0px;
+  }
 `;
 
 const fadeIn = keyframes`
@@ -108,4 +116,17 @@ export const FormContainer = styled.form`
   flex-direction: column;
   gap: 10px;
   width: 100%;
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-self: end;
+`;
+
+export const OnPayloadContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
