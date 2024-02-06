@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
@@ -24,6 +24,8 @@ import { useEffect } from "react";
 const RequestExecuter = ({ transactionId, handleBack }) => {
   const [protocolCalls, setProtocolCalls] = useState({});
   const [inputFieldsData, setInputFieldsData] = useState({});
+  const [showError, setShowError] = useState(false);
+  const requestCount = useRef(0);
   const {
     handleSubmit,
     control,
@@ -33,6 +35,33 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
   useEffect(() => {
     getSession();
   }, [transactionId]);
+
+  useEffect(() => {
+    let firstPayload = false;
+    let stopMapper = false;
+    Object.entries(protocolCalls).map((data) => {
+      const [, call] = data;
+      if (firstPayload || stopMapper) return null;
+      if (!call.type.startsWith("on_") && !call.businessPayload) {
+        requestCount.current = 0;
+        stopMapper = true;
+      }
+      if (!call.type.startsWith("on_") || call.businessPayload) {
+        return null;
+      }
+      console.log(call.type, requestCount);
+      firstPayload = true;
+      const session = setTimeout(() => {
+        getSession();
+        requestCount.current += 1;
+      }, 3000);
+      if (requestCount.current > 2) {
+        clearTimeout(session);
+        setShowError(true);
+      }
+      return null;
+    });
+  }, [protocolCalls]);
 
   const getSession = async () => {
     try {
@@ -46,9 +75,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
         `${env.sandBox}/cache?transactionid=jm_${transactionId}`,
         header
       );
-
-      console.log("sessionData", res.data);
-
+      // console.log("sessionData", res.data);
       setInputFieldsData(res.data.input);
       setProtocolCalls(res.data.protocolCalls);
     } catch (e) {
@@ -192,7 +219,6 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
   const sendRequest = async (e, call) => {
     console.log("e", e);
     console.log("call", call);
-
     // const data = getData(call.config);
     const data = e;
 
@@ -219,10 +245,10 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
     }
   };
 
+  // const [timesCalled, setTimesCalled] = useState(0);
+
   const getOnCallData = () => {
-    setTimeout(() => {
-      getSession();
-    }, 3000);
+    if (showError) return <div>{`Error: RESPONSE TIMEOUT!`}</div>;
     return <div>{`Waiting for response`}</div>;
   };
 
@@ -266,7 +292,9 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
                   </>
                 ) : (
                   <FormContainer
-                    onSubmit={handleSubmit((data) => sendRequest(data, call))}
+                    onSubmit={handleSubmit((data) => {
+                      sendRequest(data, call);
+                    })}
                   >
                     {inputFieldsData[call.config].map((item) => (
                       <RenderInput

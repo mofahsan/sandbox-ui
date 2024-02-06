@@ -177,20 +177,27 @@ const SessionForm = ({ updateStep }) => {
       <div style={{ width: "400px" }}>
         <h2>Existing Session</h2>
         <div>
-          {Object.entries(transcations).map((data) => {
-            const [key, value] = data;
-            const transactionId = value.substring(3);
-            if (value.startsWith("jm_"))
-              return (
-                <TransactionId onClick={() => updateStep(2, transactionId)}>
-                  {transactionId}
-                </TransactionId>
-              );
-          })}
+          <DisplayExistingSessions Object={Object} />
         </div>
       </div>
     </Container>
   );
+
+  function DisplayExistingSessions({ Object }) {
+    console.log(Object);
+    if (Object.entries(transcations).length === 0)
+      return <h5>CURRENTLY NO EXISTING ENTRIES!</h5>;
+    return Object.entries(transcations).map((data) => {
+      const [key, value] = data;
+      const transactionId = value.substring(3);
+      if (value.startsWith("jm_"))
+        return (
+          <TransactionId onClick={() => updateStep(2, transactionId)}>
+            {transactionId}
+          </TransactionId>
+        );
+    });
+  }
 };
 
 export default SessionForm;
