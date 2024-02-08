@@ -40,7 +40,6 @@ export const Wrapper = styled.div`
 `;
 
 export const ResponseField = styled.div`
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   padding: 10px 15px;
   background-color: gainsboro;
   word-wrap: break-word;

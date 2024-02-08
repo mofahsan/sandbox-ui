@@ -34,6 +34,8 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
     getSession();
   }, [transactionId]);
 
+  console.log("forfm error", errors);
+
   const getSession = async () => {
     try {
       const header = {};
@@ -166,11 +168,13 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
   };
 
   const displayOnCallData = (call) => {
-    console.log("call");
-    // return call.data.map((item) => {
+    const renderedResponse = call.businessPayload.map((item) => {
+      return <ResponseField>{JSON.stringify(item)}</ResponseField>;
+    });
+
     return (
       <OnPayloadContainer>
-        <ResponseField>{JSON.stringify(call.businessPayload)}</ResponseField>
+        {renderedResponse}
         <ButtonContainer>
           <SendButton
             disabled={!call?.becknPayload}
@@ -186,7 +190,6 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
         </ButtonContainer>
       </OnPayloadContainer>
     );
-    // });
   };
 
   const sendRequest = async (e, call) => {
@@ -194,7 +197,18 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
     console.log("call", call);
 
     // const data = getData(call.config);
-    const data = e;
+    const data = {};
+    Object.entries(e).map((item) => {
+      const [key, value] = item;
+
+      if (key.includes("Tag")) {
+        const parsedData = JSON.parse(value);
+        data[key] = parsedData;
+        return;
+      }
+
+      data[key] = value;
+    });
 
     try {
       const header = {};
@@ -243,7 +257,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
 
       {Object.entries(protocolCalls).map((data) => {
         const [key, call] = data;
-
+        // console.log("call>>>>", call);
         if (call.shouldRender) {
           return (
             <Container>
@@ -272,7 +286,11 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
                       <RenderInput
                         data={{
                           ...item,
-                          defaultValue: call?.businessPayload?.[item.key],
+                          defaultValue:
+                            call?.businessPayload?.[item.key] ||
+                            item.defaultValue,
+                          businessPayload:
+                            protocolCalls[call.preRequest]?.businessPayload,
                         }}
                         control={control}
                         errors={errors}

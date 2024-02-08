@@ -26,6 +26,7 @@ const SessionForm = ({ updateStep }) => {
     country: "",
     city: "",
     cityCode: "",
+    configName: "metro-flow-1",
   });
 
   useEffect(() => {
@@ -145,6 +146,19 @@ const SessionForm = ({ updateStep }) => {
               >
                 <option value="1.0.0">1.0.0</option>
                 <option value="2.0.0">2.0.0</option>
+              </Select>
+            </FormField>
+
+            <FormField>
+              <Label htmlFor="config">Cofig:</Label>
+              <Select
+                id="config"
+                name="configName"
+                value={formData.configName}
+                onChange={handleInputChange}
+              >
+                <option value="metro-flow-1">metro-flow-1</option>
+                <option value="ondemand-flow-1">ondemand-flow-1</option>
               </Select>
             </FormField>
 

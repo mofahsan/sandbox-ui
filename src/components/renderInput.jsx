@@ -11,6 +11,8 @@ const RenderInput = ({ data, control, errors }) => {
     }
   };
 
+  console.log("data", data);
+
   if (data.type === "text") {
     return (
       <FormFieldWrapper>
@@ -36,14 +38,16 @@ const RenderInput = ({ data, control, errors }) => {
         <Controller
           name={data.key}
           control={control}
-          defaultValue=""
-          rules={{ required: data.errorText, validate: isJSON }}
+          defaultValue={
+            (data?.providedOptions || data?.defaultOptions)?.[0]?.value
+          }
+          rules={{ required: data.errorText }}
           render={({ field }) => (
             <>
               <select {...field}>
                 {(data?.providedOptions || data?.defaultOptions)?.map(
                   (item) => {
-                    return <option value={item.value}>{item.key}</option>;
+                    return <option value={item.key}>{item.value}</option>;
                   }
                 )}
               </select>
