@@ -25,7 +25,7 @@ const SessionForm = ({ updateStep }) => {
     version: "2.0.0",
     country: "",
     cityCode: "",
-    configName: "metro-flow-1",
+    configName: "metro-flow-2",
   });
 
   useEffect(() => {
