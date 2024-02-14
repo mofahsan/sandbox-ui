@@ -20,11 +20,10 @@ const SessionForm = ({ updateStep }) => {
   const [formData, setFormData] = useState({
     bap_id: "",
     bap_uri: "",
-    domain: "ONDC:TRV11",
+    domain: "ONDC:TRV10",
     ttl: "",
     version: "2.0.0",
     country: "",
-    city: "",
     cityCode: "",
     configName: "metro-flow-1",
   });
@@ -120,8 +119,8 @@ const SessionForm = ({ updateStep }) => {
                 value={formData.domain}
                 onChange={handleInputChange}
               >
+                <option value="ONDC:TRV10">ONDC:TRV10</option>
                 <option value="ONDC:TRV11">ONDC:TRV11</option>
-                <option value="ONDC:FIS12">ONDC:FIS12</option>
               </Select>
             </FormField>
 
@@ -158,6 +157,7 @@ const SessionForm = ({ updateStep }) => {
                 onChange={handleInputChange}
               >
                 <option value="metro-flow-1">metro-flow-1</option>
+                <option value="metro-flow-2">metro-flow-2</option>
                 <option value="ondemand-flow-1">ondemand-flow-1</option>
               </Select>
             </FormField>
