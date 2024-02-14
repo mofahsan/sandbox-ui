@@ -1,6 +1,6 @@
 export const env = {
-  sandBox: "http://localhost:80",
-  // sandBox: "https://fis-buyer-staging.ondc.org/api",
+  // sandBox: "http://localhost:80",
+  sandBox: "https://fis-buyer-staging.ondc.org/api",
   mockServer: "https://fis-seller-staging.ondc.org",
   metroMock: "http://localhost:5500",
 };
