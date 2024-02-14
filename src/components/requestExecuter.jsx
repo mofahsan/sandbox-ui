@@ -49,7 +49,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
         header
       );
 
-      console.log("sessionData", res.data);
+      // console.log("sessionData", res.data);
 
       setInputFieldsData(res.data.input);
       setProtocolCalls(res.data.protocolCalls);
@@ -198,6 +198,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
 
     // const data = getData(call.config);
     const data = {};
+
     Object.entries(e).map((item) => {
       const [key, value] = item;
 
@@ -209,7 +210,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
 
       data[key] = value;
     });
-
+    console.log(data);
     try {
       const header = {};
       header.headers = {
@@ -225,7 +226,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
         }),
         header
       );
-
+      console.log(call.config);
       setProtocolCalls(res.data.session.protocolCalls);
     } catch (e) {
       console.log("Error while fetching session data", e);

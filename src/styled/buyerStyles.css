@@ -1,0 +1,219 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap"); */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+/* body {
+  font-family: "Roboto Mono", sans-serif;
+  color: #252525;
+  font-weight: 400;
+  font-size: 1.5rem;
+  background-color: #f7f2e9;
+  min-height: 100vh;
+  padding: 3.2rem;
+  padding-bottom: 6rem;
+} */
+
+.container {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+/* *************** */
+
+.header {
+  align-self: stretch;
+}
+
+.header h1 {
+  /* Non-accessible color */
+  color: #ed4b4b;
+  /* color: #af8602; */
+
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 3.2rem;
+  font-weight: 300;
+  letter-spacing: 3px;
+  position: relative;
+  width: 100%;
+  display: block;
+}
+
+.header h1::before,
+.header h1::after {
+  display: block;
+  content: "";
+  height: 3px;
+  width: 4rem;
+  background-color: #ed4b4b;
+  position: absolute;
+  top: calc(50% - 1px);
+}
+
+.header h1::before {
+  left: 0;
+}
+
+.header h1::after {
+  right: 0;
+}
+
+/* *************** */
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.menu h2 {
+  display: inline-block;
+  padding: 1rem 0;
+  border-top: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 400;
+}
+
+label {
+  /* margin-top: 10px; */
+  margin-bottom: 10px; /* Add space between label and select */
+  display: block; /* Ensure label takes up its own line */
+}
+
+.menu > p {
+  font-size: 1.7rem;
+  text-align: left;
+  line-height: 1.6;
+  width: 80%;
+}
+
+.block {
+  display: block-inline;
+  width: 100%;
+
+  /* background-color: hsl(0, 0%, 84%); */
+}
+
+.Demo {
+  /* display: flex; */
+  gap: 5rem;
+}
+
+.Demo img {
+  width: 12rem;
+  aspect-ratio: 1;
+  align-self: start;
+}
+
+.selectorDiv {
+  display: inline-block;
+  padding-top: 10px;
+  width: 100%;
+}
+.Demo div {
+  /* display: flex; */
+  /* flex-direction: column; */
+  align-items: last baseline;
+  /* padding: 0.4rem 0; */
+}
+
+.Demo h3 {
+  font-size: 2.4rem;
+  font-weight: 400;
+  /* margin: 4px; */
+  padding: 5px;
+}
+
+.Demo p {
+  font-size: 1.7rem;
+  font-weight: 300;
+  /* font-style: italic; */
+  margin-bottom: auto;
+  /* margin: 2px; */
+  padding: 2px;
+}
+
+.Demo span {
+  display: block;
+  font-size: 1.6rem;
+}
+
+.Demo.sold-out {
+  color: #888;
+}
+
+.Demo.sold-out img {
+  filter: grayscale();
+  opacity: 0.8;
+}
+
+/* *************** */
+
+.footer {
+  font-size: 1.4rem;
+}
+
+.order {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  gap: 2.4rem;
+}
+
+.btn {
+  color: inherit;
+  font-family: inherit;
+  border: none;
+  font-size: 1.4rem;
+  font-weight: 500;
+  background-color: #ed4b4b;
+  padding: 1.4rem 3.2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+
+.btn-small {
+  color: inherit;
+  font-family: inherit;
+  border: none;
+  font-size: 1.4rem;
+  font-weight: 500;
+  background-color: #ed4b4b;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 3px;
+}
+.btn-small:hover {
+  background-color: #e9bb24;
+}
+.btn:hover {
+  background-color: #e9bb24;
+}
+
+.stdGap {
+  display: "inline-block";
+  width: "100%";
+  margin-top: "10px";
+}
+
+.dashed {
+  stroke-dasharray: 5, 5;
+}
