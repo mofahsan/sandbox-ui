@@ -8,7 +8,7 @@ const endLine = "SellerApp";
 
 let expandData = { title: "", info: "" };
 
-function Chart(data, payloads) {
+function Chart({ data, payloads }) {
   const chartRef = useRef(null);
   const prevData = useRef([
     {
@@ -192,7 +192,11 @@ function Chart(data, payloads) {
       .on("click", (d) => {
         expandData = {
           title: d.srcElement.textContent,
-          info: JSON.stringify("search_payload", null, "\t"),
+          info: JSON.stringify(
+            GetPayloadFor(d.srcElement.textContent, payloads),
+            null,
+            "\t"
+          ),
         };
         setOpen(true);
       });
@@ -211,7 +215,7 @@ function Chart(data, payloads) {
           .attr("y", ([, y]) => y - 10)
           .style("font-size", (d) => 18 + "px");
       });
-  }, [data, prevData]);
+  }, [data, prevData, payloads]);
   return (
     <>
       <svg ref={chartRef}></svg>
@@ -243,7 +247,114 @@ function dodge(positions, separation = 10, maxiter = 10, maxerror = 1e-1) {
   return positions;
 }
 
-function MakeSlopeChart({ data, payloads }) {
-  return Chart(data, payloads);
+function GetPayloadFor(title, sessionData) {
+  title = title.trim();
+  console.log(sessionData);
+  if (title === "search") {
+    return sessionData.search_trip.becknPayload;
+  }
+  if (title === "on_search") {
+    return sessionData.on_search_trip.becknPayload;
+  }
+  if (title === "ACK") {
+    return sessionData.on_search_trip.becknResponse;
+  }
+  return sessionData[title].becknPayload;
+}
+
+function MakeSlopeChart({ data, sessionData }) {
+  return <Chart data={data} payloads={sessionData} />;
 }
 export default MakeSlopeChart;
+
+const x = {
+  context: {
+    bap_id: "api.example-bap.com",
+    bap_uri: "https://c379-103-173-93-158.ngrok-free.app/ondc",
+    location: {
+      country: {
+        code: "IND",
+      },
+      city: {
+        code: "std:044",
+      },
+    },
+    transaction_id: "2ad42be7-d98f-45ec-b5ff-6d50447272fa",
+    message_id: "28c3bac3-a151-4447-9876-9f9b79c0addc",
+    timestamp: "2024-02-14T09:58:31.083Z",
+    domain: "ONDC:TRV11",
+    version: "2.0.0",
+    ttl: "PT30S",
+    action: "search",
+  },
+  message: {
+    intent: {
+      fulfillment: {
+        stops: [
+          {
+            type: "START",
+            location: {
+              descriptor: {
+                code: "SAT|0215",
+              },
+            },
+          },
+          {
+            type: "END",
+            location: {
+              descriptor: {
+                code: "SAL|0231",
+              },
+            },
+          },
+        ],
+        vehicle: {
+          category: "METRO",
+        },
+      },
+      payment: {
+        tags: [
+          {
+            descriptor: {
+              code: "BUYER_FINDER_FEES",
+            },
+            list: [
+              {
+                descriptor: {
+                  code: "BUYER_FINDER_FEES_TYPE",
+                },
+                value: "percent-annualized",
+              },
+              {
+                descriptor: {
+                  code: "BUYER_FINDER_FEES_PERCENTAGE",
+                },
+                value: "1",
+              },
+            ],
+          },
+          {
+            descriptor: {
+              code: "SETTLEMENT_TERMS",
+            },
+            list: [
+              {
+                descriptor: {
+                  code: "DELAY_INTEREST",
+                },
+                value: "2.5",
+              },
+              {
+                descriptor: {
+                  code: "STATIC_TERMS",
+                },
+                value:
+                  "https://bap.credit.becknprotocol.io/personal-banking/loans/personal-loan",
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
+};

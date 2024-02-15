@@ -67,7 +67,7 @@ function Demo({ currentAPI, sessionData, setCurrentAPI }) {
         >
           <MakeMarkovChart
             data={currentAPI.index >= 2 ? select_data : []}
-            payloads={["hello"]}
+            sessionData={sessionData}
           />
         </OnSearchPageMenu>
       )}
@@ -75,7 +75,7 @@ function Demo({ currentAPI, sessionData, setCurrentAPI }) {
         <SendInitForm sessionData={sessionData} setCurrentAPI={setCurrentAPI}>
           <MakeMarkovChart
             data={currentAPI.index >= 3 ? init_data : []}
-            payloads={["hello"]}
+            sessionData={sessionData}
           />
         </SendInitForm>
       )}
@@ -87,7 +87,7 @@ function Demo({ currentAPI, sessionData, setCurrentAPI }) {
         >
           <MakeMarkovChart
             data={currentAPI >= 4 ? confirm_data : []}
-            payloads={["hello"]}
+            sessionData={sessionData}
           />
         </OnInitInfo>
       )}
@@ -98,10 +98,13 @@ function Demo({ currentAPI, sessionData, setCurrentAPI }) {
 
 function SearchRouteMenu(sessionData, currentAPI, setCurrentAPI) {
   const selectStart = (e) => {
+    const on_search = sessionData.on_search_route.becknPayload[0].context;
+    const uri = on_search.bpp_uri;
+    const id = on_search.bpp_id;
     const payload = {
       ...currentAPI.payload,
-      bpp_uri: "https://mobility-staging.ondc.org/seller/",
-      bpp_id: "mobility-staging.ondc.org",
+      bpp_uri: uri,
+      bpp_id: id,
       startStop: e.label,
     };
     setCurrentAPI((s) => ({ ...s, payload }));
@@ -128,7 +131,7 @@ function SearchRouteMenu(sessionData, currentAPI, setCurrentAPI) {
       />
       <MakeMarkovChart
         data={currentAPI.index >= 1 ? search_data : []}
-        payloads={["hello"]}
+        sessionData={sessionData}
       />
     </AccordionUsage>
   );
@@ -144,7 +147,7 @@ function StationDropDownMenu({ description, sessionData, onChange = null }) {
   if (!sessionData.on_search_route?.executed) {
     options = [];
   } else {
-    const catalog = sessionData.on_search_route?.becknPayload.at(1).message;
+    const catalog = sessionData.on_search_route?.becknPayload.at(0)?.message;
     const stops = catalog.catalog.providers.at(0).fulfillments.at(0).stops;
     options = stops.map((s) => {
       return { value: s.id, label: s.location.descriptor.code };
@@ -163,19 +166,6 @@ function StationDropDownMenu({ description, sessionData, onChange = null }) {
       </div>
     </>
   );
-}
-
-function CreateBasePayload(index) {
-  if (index === 0)
-    return {
-      bpp_uri: "https://mobility-staging.ondc.org/seller/",
-      bpp_id: "mobility-staging.ondc.org",
-      startStop: "",
-      endStop: "",
-    };
-  if (index === 1) {
-    return { itemId: "", quantity: "", providerId: "P1" };
-  }
 }
 
 const search_data = GenrateNewGraphData([], 0);

@@ -11,7 +11,7 @@ export function OnInitInfo({
     { value: "S1", label: "PAID" },
     { value: "S2", label: "NOT PAID" },
   ];
-  console.log(sessionData);
+  // console.log(sessionData);
 
   const setPayload = (e) => {
     return {

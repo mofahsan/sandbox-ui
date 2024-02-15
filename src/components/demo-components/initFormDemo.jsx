@@ -48,12 +48,12 @@ export default function SendInitForm({ sessionData, setCurrentAPI, children }) {
     // justifyContent: "center" /* Centers child horizontally */,
     // alignItems: "" /* Centers child vertically */,
   };
-  let totalAmount = "Loading...";
+  let totalAmount = "100";
   console.log(sessionData);
   if (sessionData.on_select.executed) {
-    totalAmount =
-      sessionData.on_select.becknPayload[0].message.order.quote.breakup[0].price
-        .value + " INR";
+    // totalAmount =
+    //   sessionData.on_select.becknPayload[0].message.order.quote.breakup[0].price
+    //     .value + " INR";
   }
   return (
     <>

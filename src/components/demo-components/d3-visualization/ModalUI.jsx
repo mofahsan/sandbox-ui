@@ -10,9 +10,9 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 700,
-  height: 700,
-  overflow: "scroll",
+  width: 500,
+  height: 650,
+  overflow: "auto",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -50,7 +50,7 @@ export default function TransitionsModal({ open, setOpen, data }) {
               sx={{ mt: 2 }}
               variant="h5"
             >
-              <code>
+              <code style={{ overflow: "auto" }}>
                 <pre>{data.info}</pre>
               </code>
             </Typography>

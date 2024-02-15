@@ -13,10 +13,15 @@ function OnSearchPageMenu({ sessionData, setCurrentAPI, children }) {
   let tickets_data = [];
   useEffect(() => {
     const payload = (e) => {
+      const on_search = sessionData.on_search_route.becknPayload[0].context;
+      const uri = on_search.bpp_uri;
+      const id = on_search.bpp_id;
       return {
         ...e,
-        providerId: "P1",
-        itemId: "ITEM_ID_1_METRO", //inputData.id,
+        bpp_uri: uri,
+        bpp_id: id,
+        providerId: "triffy-cmrl-rail-metro",
+        itemId: inputData.id, //inputData.id,
         quantity: inputData.q,
       };
     };
@@ -26,7 +31,7 @@ function OnSearchPageMenu({ sessionData, setCurrentAPI, children }) {
   }, [inputData]);
   if (sessionData.on_search_trip.executed) {
     const items =
-      sessionData.on_search_trip.becknPayload[1].message.catalog.providers[0]
+      sessionData.on_search_trip.becknPayload[0].message.catalog.providers[0]
         .items;
     tickets_data = items.map((i) => {
       return { name: i.descriptor.name, code: i.id, price: i.price.value };

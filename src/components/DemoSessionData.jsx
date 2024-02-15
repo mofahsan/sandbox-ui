@@ -37,7 +37,7 @@ export function DemoSessionData({ setCurrentAPI, setSessionData }) {
       ttl: "PT30S",
       version: "2.0.0",
       country: "IND",
-      cityCode: "std:011",
+      cityCode: "std:044",
       configName: "metro-flow-1",
     };
 
@@ -125,7 +125,6 @@ export function DemoSessionData({ setCurrentAPI, setSessionData }) {
         `${env.sandBox}/cache?transactionid=jm_${transactionId.current}`,
         header
       );
-
       setSessionData(res.data.protocolCalls);
     } catch (e) {
       console.log("Error while fetching session data", e);
