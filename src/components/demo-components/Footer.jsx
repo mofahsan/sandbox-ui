@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
 import { DemoSessionData } from "../DemoSessionData";
 import { apiList } from "../BuyerAppDemo";
@@ -8,23 +8,30 @@ import { env } from "../../env/env";
 
 export function Footer({
   currentAPI,
+  sessionData,
   setCurrentAPI,
   setSessionData,
-  payloadData,
 }) {
   const onClick = () => {
     if (currentAPI >= 4) return;
     setCurrentAPI((s) => ({ ...s, index: s.index + 1 }));
     sendRequest(currentAPI, setSessionData);
-    RequestTwice(currentAPI, setSessionData);
+    // RequestTwice(currentAPI, setSessionData);
   };
+
+  // useEffect(() => {
+  //   sendRequest(currentAPI, setSessionData);
+  // }, [currentAPI, setSessionData]);
 
   return (
     <footer className="footer" style={{ display: "flex" }}>
-      <div className="order">{ContinueSessionBtn(onClick, currentAPI)}</div>
+      {Object.keys(sessionData).length > 0 && (
+        <div className="order">{ContinueSessionBtn(onClick, currentAPI)}</div>
+      )}
       <DemoSessionData
         setCurrentAPI={setCurrentAPI}
         setSessionData={setSessionData}
+        sessionData={sessionData}
       />
     </footer>
   );
@@ -50,45 +57,24 @@ function GetConfig(index) {
   else if (index === 2) return "init";
   else if (index === 3) return "confirm";
 }
-let done = false;
-function RequestTwice(currentAPI, setSessionData) {
-  let a = 0;
-  const call = setTimeout(() => {
-    if (a >= 2 || done) {
-      clearTimeout(call);
-      return;
-    }
-    getSession(currentAPI, setSessionData);
-    done = false;
-    a += 1;
-  }, 3000);
-}
-const getSession = async (currentAPI, setSessionData, call) => {
-  console.log("hello");
-  try {
-    const header = {};
-    header.headers = {
-      ...header.headers,
-      "Content-Type": "application/json",
-    };
-    const res = await axios.get(
-      `${env.sandBox}/cache?transactionid=jm_${currentAPI.transactionId}`,
-      header
-    );
-    setSessionData(res.data.protocolCalls);
-    done = true;
-  } catch (e) {
-    console.log("Error while fetching session data", e);
-    toast.error(JSON.stringify(e.response.data));
-  }
-};
 
-// message.catalog.providers[].items[].add_ons[]{desc:descriptor.short_desc}
-// message.catalog.providers[].items[].add_ons[]{@:price}
+// let done = false;
+// function RequestTwice(currentAPI, setSessionData) {
+//   let a = 0;
+//   const call = setTimeout(() => {
+//     if (a >= 2 || done) {
+//       clearTimeout(call);
+//       return;
+//     }
+//     getSession(currentAPI, setSessionData);
+//     done = false;
+//     a += 1;
+//   }, 3000);
+// }
 
 const sendRequest = async (currentAPI, setSessionData) => {
-  // console.log(data);
   try {
+    console.log("sending");
     const header = {};
     header.headers = {
       ...header.headers,

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
 
 import { v4 as uuidv4 } from "uuid";
@@ -6,29 +6,59 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { env } from "../env/env";
 
-// const paymentTags = `{
-//   "BUYER_FINDER_FEES": {
-//     "BUYER_FINDER_FEES_TYPE": "percent-annualized",
-//     "BUYER_FINDER_FEES_PERCENTAGE": "1"
-//   },
-//   "SETTLEMENT_TERMS": {
-//     "DELAY_INTEREST": 2.5,
-//     "STATIC_TERMS": "https://bap.credit.becknprotocol.io/personal-banking/loans/personal-loan"
-//   }
-// }`;
-
-export function DemoSessionData({ setCurrentAPI, setSessionData }) {
+export function DemoSessionData({
+  currentAPI,
+  sessionData,
+  setCurrentAPI,
+  setSessionData,
+}) {
   //button which creates a new session and resets demo
   // search for routes
   let transactionId = useRef("");
-
+  const [FetchingSession, setFetchingSession] = useState(false);
   const createSession = () => {
     setCurrentAPI({ index: 0, payload: {} });
     transactionId.current = uuidv4();
-    handleSubmit();
+    initSession();
   };
 
-  const handleSubmit = async (e) => {
+  // gets session when required
+  useEffect(() => {
+    const getSession = async () => {
+      try {
+        console.log("getting");
+        if (FetchingSession) return;
+        setFetchingSession(true);
+        const header = {};
+        header.headers = {
+          ...header.headers,
+          "Content-Type": "application/json",
+        };
+        const res = await axios.get(
+          `${env.sandBox}/cache?transactionid=jm_${transactionId.current}`,
+          header
+        );
+        await setSessionData(res.data.protocolCalls);
+        setFetchingSession(false);
+      } catch (e) {
+        console.log("Error while fetching session data", e);
+        toast.error(JSON.stringify(e.response.data));
+      }
+    };
+    const data = sessionData;
+    Object.entries(data).map((call) => {
+      if (!call[0].startsWith("on") || !call[1].shouldRender) return null;
+      if (call[1].executed) return null;
+      if (!FetchingSession) {
+        setTimeout(() => {
+          getSession();
+        }, 2000);
+      }
+      return null;
+    });
+  }, [sessionData, setSessionData, FetchingSession]);
+
+  const initSession = async (e) => {
     // e.preventDefault();
     const formData = {
       bap_id: "api.example-bap.com",
@@ -55,10 +85,7 @@ export function DemoSessionData({ setCurrentAPI, setSessionData }) {
         JSON.stringify({ ...formData, transaction_id: transactiomId }),
         header
       );
-      // console.log(x);
-      // setSessionData(x.data.session.protocolCalls);
       await sendRequest_searchRoute();
-      await getSession();
     } catch (e) {
       console.log("error while sending session request", e);
       // toast.error(JSON.stringify(e.response.data));
@@ -107,28 +134,10 @@ export function DemoSessionData({ setCurrentAPI, setSessionData }) {
         header
       );
       // console.log(res);
-      // setSessionData(res.data.session.protocolCalls);
+      setSessionData(res.data.session.protocolCalls);
     } catch (e) {
       console.log("Error while fetching session data", e);
       // toast.error(JSON.stringify(e.response.data));
-    }
-  };
-
-  const getSession = async () => {
-    try {
-      const header = {};
-      header.headers = {
-        ...header.headers,
-        "Content-Type": "application/json",
-      };
-      const res = await axios.get(
-        `${env.sandBox}/cache?transactionid=jm_${transactionId.current}`,
-        header
-      );
-      setSessionData(res.data.protocolCalls);
-    } catch (e) {
-      console.log("Error while fetching session data", e);
-      toast.error(JSON.stringify(e.response.data));
     }
   };
 
@@ -142,7 +151,7 @@ export function DemoSessionData({ setCurrentAPI, setSessionData }) {
       >
         Create New Session
       </Button>
-      <Button onClick={getSession}>Get REs</Button>
+      {/* <Button onClick={getSession}>Get REs</Button> */}
     </>
   );
 }

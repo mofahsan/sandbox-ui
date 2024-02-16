@@ -20,7 +20,7 @@ function OnSearchPageMenu({ sessionData, setCurrentAPI, children }) {
         ...e,
         bpp_uri: uri,
         bpp_id: id,
-        providerId: "triffy-cmrl-rail-metro",
+        providerId: "P1",
         itemId: inputData.id, //inputData.id,
         quantity: inputData.q,
       };
@@ -28,7 +28,7 @@ function OnSearchPageMenu({ sessionData, setCurrentAPI, children }) {
     setCurrentAPI((s) => {
       return { ...s, payload: payload(s.payload) };
     });
-  }, [inputData]);
+  }, [inputData, setCurrentAPI, sessionData]);
   if (sessionData.on_search_trip.executed) {
     const items =
       sessionData.on_search_trip.becknPayload[0].message.catalog.providers[0]

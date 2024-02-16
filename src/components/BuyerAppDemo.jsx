@@ -1,8 +1,8 @@
 import { Container } from "../styled/buyerDemo.style";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AccordionUsage from "./demo-components/Accordian";
 import Select from "react-select";
-
+import ReactLoading from "react-loading";
 import OnSearchPageMenu from "./demo-components/onSearchDemo";
 import SendInitForm from "./demo-components/initFormDemo";
 import { OnInitInfo, OnConfirmInfo } from "./demo-components/confirmDemo";
@@ -29,6 +29,7 @@ export function BuyerAppDemo() {
         currentAPI={currentAPI}
         setCurrentAPI={setCurrentAPI}
         setSessionData={setSessionData}
+        sessionData={sessionData}
       />
     </Container>
   );
@@ -57,48 +58,102 @@ function Menu({ currentAPI, sessionData, setCurrentAPI }) {
 }
 
 function Demo({ currentAPI, sessionData, setCurrentAPI }) {
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    function CheckLoading(sessionData) {
+      for (let c in sessionData) {
+        const call = sessionData[c];
+        // console.log(call);
+        if (!call.type.startsWith("on") || !call.shouldRender) continue;
+        if (!call.executed) {
+          setLoading(true);
+          return;
+        }
+      }
+      setLoading(false);
+    }
+    CheckLoading(sessionData);
+  }, [sessionData]); // checks loading
+
   return (
     <>
-      {SearchRouteMenu(sessionData, currentAPI, setCurrentAPI)}
-      {currentAPI.index >= 1 && (
-        <OnSearchPageMenu
-          sessionData={sessionData}
-          setCurrentAPI={setCurrentAPI}
-        >
-          <MakeMarkovChart
-            data={currentAPI.index >= 2 ? select_data : []}
-            sessionData={sessionData}
-          />
-        </OnSearchPageMenu>
-      )}
-      {currentAPI.index >= 2 && (
-        <SendInitForm sessionData={sessionData} setCurrentAPI={setCurrentAPI}>
-          <MakeMarkovChart
-            data={currentAPI.index >= 3 ? init_data : []}
-            sessionData={sessionData}
-          />
-        </SendInitForm>
-      )}
-      {currentAPI.index >= 3 && (
-        <OnInitInfo
+      {loading && currentAPI.index === 0 ? (
+        <LoadingIcon />
+      ) : (
+        <SearchRouteMenu
           sessionData={sessionData}
           currentAPI={currentAPI}
           setCurrentAPI={setCurrentAPI}
-        >
-          <MakeMarkovChart
-            data={currentAPI >= 4 ? confirm_data : []}
-            sessionData={sessionData}
-          />
-        </OnInitInfo>
+        />
       )}
-      {currentAPI.index >= 4 && <OnConfirmInfo />}
+
+      {loading && currentAPI.index === 1 ? (
+        <LoadingIcon />
+      ) : (
+        currentAPI.index >= 1 && (
+          <OnSearchPageMenu
+            sessionData={sessionData}
+            setCurrentAPI={setCurrentAPI}
+          >
+            <MakeMarkovChart
+              data={currentAPI.index >= 2 ? select_data : []}
+              sessionData={sessionData}
+            />
+          </OnSearchPageMenu>
+        )
+      )}
+
+      {loading && currentAPI.index === 2 ? (
+        <LoadingIcon />
+      ) : (
+        currentAPI.index >= 2 && (
+          <SendInitForm sessionData={sessionData} setCurrentAPI={setCurrentAPI}>
+            <MakeMarkovChart
+              data={currentAPI.index >= 3 ? init_data : []}
+              sessionData={sessionData}
+            />
+          </SendInitForm>
+        )
+      )}
+      {loading && currentAPI.index === 3 ? (
+        <LoadingIcon />
+      ) : (
+        currentAPI.index >= 3 && (
+          <OnInitInfo
+            sessionData={sessionData}
+            currentAPI={currentAPI}
+            setCurrentAPI={setCurrentAPI}
+          >
+            <MakeMarkovChart
+              data={currentAPI >= 4 ? confirm_data : []}
+              sessionData={sessionData}
+            />
+          </OnInitInfo>
+        )
+      )}
+      {loading && currentAPI.index === 4 ? (
+        <LoadingIcon />
+      ) : (
+        currentAPI.index >= 4 && <OnConfirmInfo />
+      )}
     </>
   );
 }
 
-function SearchRouteMenu(sessionData, currentAPI, setCurrentAPI) {
+function LoadingIcon() {
+  return (
+    <div style={{ marginTop: "10px" }}>
+      <ReactLoading type="spin" height={50} width={50} color="red" />
+    </div>
+  );
+}
+
+function SearchRouteMenu({ sessionData, currentAPI, setCurrentAPI }) {
   const selectStart = (e) => {
-    const on_search = sessionData.on_search_route.becknPayload[0].context;
+    const beckn = sessionData.on_search_route.becknPayload.filter(
+      (b) => b.message.catalog.descriptor.name === "Transit Solutions"
+    )[0];
+    const on_search = beckn.context;
     const uri = on_search.bpp_uri;
     const id = on_search.bpp_id;
     const payload = {
@@ -116,6 +171,8 @@ function SearchRouteMenu(sessionData, currentAPI, setCurrentAPI) {
     };
     setCurrentAPI((s) => ({ ...s, payload }));
   };
+  if (Object.keys(sessionData).length <= 0) return <h2>Start A Session</h2>;
+
   return (
     <AccordionUsage title={"search"}>
       <h2>Select Start and End Locations</h2>
@@ -147,7 +204,10 @@ function StationDropDownMenu({ description, sessionData, onChange = null }) {
   if (!sessionData.on_search_route?.executed) {
     options = [];
   } else {
-    const catalog = sessionData.on_search_route?.becknPayload.at(0)?.message;
+    const beckn = sessionData.on_search_route.becknPayload.filter(
+      (b) => b.message.catalog.descriptor.name === "Transit Solutions"
+    )[0];
+    const catalog = beckn.message;
     const stops = catalog.catalog.providers.at(0).fulfillments.at(0).stops;
     options = stops.map((s) => {
       return { value: s.id, label: s.location.descriptor.code };
