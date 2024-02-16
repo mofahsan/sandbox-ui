@@ -18,10 +18,6 @@ import { useEffect } from "react";
 const SessionForm = ({ updateStep }) => {
   const [transcations, setTransactions] = useState([]);
   const [formData, setFormData] = useState({
-    bap_id: "",
-    bap_uri: "",
-    domain: "ONDC:TRV10",
-    ttl: "",
     version: "2.0.0",
     country: "",
     cityCode: "",
@@ -71,7 +67,7 @@ const SessionForm = ({ updateStep }) => {
       updateStep(2, transactiomId);
     } catch (e) {
       console.log("error while sending session request", e);
-      toast.error(JSON.stringify(e.response.data));
+      toast.error(JSON.stringify(e?.response?.data));
     }
   };
 
@@ -89,52 +85,6 @@ const SessionForm = ({ updateStep }) => {
         <h2>Session Data</h2>
         <form onSubmit={handleSubmit}>
           <FormContainer>
-            <FormField>
-              <Label htmlFor="bap_id">BAP ID:</Label>
-              <Input
-                type="text"
-                id="bap_id"
-                name="bap_id"
-                value={formData.bap_id}
-                onChange={handleInputChange}
-              />
-            </FormField>
-
-            <FormField>
-              <Label htmlFor="bap_uri">BAP URI:</Label>
-              <Input
-                type="text"
-                id="bap_uri"
-                name="bap_uri"
-                value={formData.bap_uri}
-                onChange={handleInputChange}
-              />
-            </FormField>
-
-            <FormField>
-              <Label htmlFor="domain">Domain:</Label>
-              <Select
-                id="domain"
-                name="domain"
-                value={formData.domain}
-                onChange={handleInputChange}
-              >
-                <option value="ONDC:TRV10">ONDC:TRV10</option>
-                <option value="ONDC:TRV11">ONDC:TRV11</option>
-              </Select>
-            </FormField>
-
-            <FormField>
-              <Label htmlFor="ttl">TTL:</Label>
-              <Input
-                type="text"
-                id="ttl"
-                name="ttl"
-                value={formData.ttl}
-                onChange={handleInputChange}
-              />
-            </FormField>
-
             <FormField>
               <Label htmlFor="version">Version:</Label>
               <Select

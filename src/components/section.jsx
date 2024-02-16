@@ -49,7 +49,7 @@
             onClick={()=>{CallNewReqest('RequestTracer')
             getTransactionIdData(transactionid_variable.current)}}>Request Tracer</NewRequestbutton>
             <NewRequestbutton onClick={()=>{CallNewReqest('NewRequest')}}  active={newRequestContainer === 'NewRequest'}>New Request</NewRequestbutton>
-            <NewRequestbutton onClick={()=>{CallNewReqest('PayloadMapper')}}  active={newRequestContainer === 'PayloadMapper'}>Payload Mapper</NewRequestbutton>
+            <NewRequestbutton onClick={()=>{CallNewReqest('PayloadMapper')}}  active={newRequestContainer === 'PayloadMapper'}>Buyer Mock</NewRequestbutton>
 
         </NewRequestDiv>
 
