@@ -50,7 +50,6 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
       if (!call.type.startsWith("on_") || call.businessPayload) {
         return null;
       }
-      console.log(call.type, requestCount);
       firstPayload = true;
       const session = setTimeout(() => {
         getSession();
@@ -58,13 +57,35 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
       }, 3000);
       if (requestCount.current > 2) {
         clearTimeout(session);
+        toast.error("Response timeout");
+        sessionTimeout(call.config);
         setShowError(true);
       }
       return null;
     });
   }, [protocolCalls]);
 
-  console.log("forfm error", errors);
+  const sessionTimeout = async (config) => {
+    try {
+      const header = {};
+      header.headers = {
+        ...header.headers,
+        "Content-Type": "application/json",
+      };
+
+      const res = await axios.post(
+        `${env.sandBox}/mapper/timeout`,
+        JSON.stringify({ config, transactionId }),
+        header
+      );
+
+      setInputFieldsData(res.data.session.input);
+      setProtocolCalls(res.data.session.protocolCalls);
+    } catch (e) {
+      console.log("Error while fetching session data", e);
+      toast.error(JSON.stringify(e?.response));
+    }
+  };
 
   const getSession = async () => {
     try {
@@ -78,8 +99,6 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
         `${env.sandBox}/cache?transactionid=jm_${transactionId}`,
         header
       );
-
-      console.log("sessionData", res.data);
 
       setInputFieldsData(res.data.input);
       setProtocolCalls(res.data.protocolCalls);
@@ -223,9 +242,6 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
   };
 
   const sendRequest = async (e, call) => {
-    console.log("e", e);
-    console.log("call", call);
-
     // const data = getData(call.config);
     const data = {};
     Object.entries(e).map((item) => {
@@ -285,7 +301,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
 
       {Object.entries(protocolCalls).map((data) => {
         const [key, call] = data;
-        // console.log("call>>>>", call);
+
         if (call.shouldRender) {
           return (
             <Container>
