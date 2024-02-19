@@ -1,74 +1,60 @@
 import * as React from "react";
-import Backdrop from "@mui/material/Backdrop";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Fade from "@mui/material/Fade";
-import Typography from "@mui/material/Typography";
 import { toast } from "react-toastify";
-import { SendButton } from "../../styled/requestExecuter.style";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "50%",
-  height: "90%",
-  overflow: "Scroll",
-  overflowX: "Scroll",
-  bgcolor: "#e6e6e6",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
 
 export default function TransitionsModal({ open, setOpen, data }) {
-  //   const [open, setOpen] = React.useState(false);
-  //   const handleOpen = () => setOpen(true);
-
+  const scroll = "paper";
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const descriptionElementRef = React.useRef(null);
+  React.useEffect(() => {
+    if (open) {
+      const { current: descriptionElement } = descriptionElementRef;
+      if (descriptionElement !== null) {
+        descriptionElement.focus();
+      }
+    }
+  }, [open]);
   const handleCopy = () => {
     navigator.clipboard.writeText(JSON.stringify(data.json, null, 2));
     toast.success("Payload copied!");
   };
-
-  const handleClose = () => setOpen(false);
-  //{ open, setOpen, data }
   return (
-    <div>
-      {/* <Button onClick={handleOpen}>Open modal</Button> */}
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
+    <React.Fragment>
+      <Dialog
         open={open}
         onClose={handleClose}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
+        scroll={scroll}
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+        fullWidth={true}
+        maxWidth="xl"
       >
-        <Fade in={open}>
-          <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h4" component="h2">
-              {data.title}
-              <SendButton style={{ marginLeft: "10px" }} onClick={handleCopy}>
-                Copy Json
-              </SendButton>
-            </Typography>
-            <Typography
-              id="transition-modal-description"
-              sx={{ mt: 2 }}
-              variant="h5"
-            >
-              <code style={{ overflow: "auto" }}>
-                <pre>{data.info}</pre>
-              </code>
-            </Typography>
-          </Box>
-        </Fade>
-      </Modal>
-    </div>
+        <DialogTitle id="scroll-dialog-title">{data.title}</DialogTitle>
+        <DialogContent dividers={scroll === "paper"}>
+          <DialogContentText
+            id="scroll-dialog-description"
+            ref={descriptionElementRef}
+            tabIndex={-1}
+          >
+            <code>
+              <pre style={{ overflow: "visible", fontSize: "18px" }}>
+                {JSON.stringify(data.json, null, "\t")}
+              </pre>
+            </code>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={handleCopy}>Copy</Button>
+        </DialogActions>
+      </Dialog>
+    </React.Fragment>
   );
 }
