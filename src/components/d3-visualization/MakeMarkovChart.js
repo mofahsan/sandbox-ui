@@ -9,11 +9,11 @@ const endLine = "SellerApp";
 let expandData = { title: "", info: "", json: "" };
 function MakeSlopeChart({ sessionData, config }) {
   const data = GenrateNewGraphData([], config.slice(3));
-  return <Chart data={data} payloads={sessionData} />;
+  return <Chart data={data} payloads={sessionData} config={config} />;
 }
 export default MakeSlopeChart;
 
-function Chart({ data, payloads }) {
+function Chart({ data, payloads, config }) {
   const chartRef = useRef(null);
   const prevData = useRef(new Set());
   const [open, setOpen] = React.useState(false);
@@ -151,7 +151,11 @@ function Chart({ data, payloads }) {
       .text(([text]) => text)
       .style("fond-size", "0")
       .on("click", (d) => {
-        const payload = GetPayloadFor(d.srcElement.textContent, payloads);
+        const payload = GetPayloadFor(
+          d.srcElement.textContent,
+          payloads,
+          config
+        );
         expandData = {
           title: d.srcElement.textContent,
           info: JSON.stringify(payload, null, "\t"),
@@ -257,10 +261,14 @@ function dodge(positions, separation = 10, maxiter = 10, maxerror = 1e-1) {
   return positions;
 }
 
-function GetPayloadFor(title, sessionData) {
+function GetPayloadFor(title, sessionData, config) {
   title = title.trim();
-  if (title.startsWith("ACK")) {
-    return sessionData.on_search_trip.becknResponse;
+  console.log(sessionData);
+  if (title === "ACK_buyer") {
+    return sessionData[config].becknResponse;
+  }
+  if (title === "ACK_seller") {
+    return sessionData[config.slice(3)].becknResponse;
   }
   return sessionData[title].becknPayload;
 }
