@@ -20,6 +20,7 @@ import {
 } from "../styled/requestExecuter.style";
 import RenderInput from "./renderInput";
 import { useEffect } from "react";
+import MakeSlopeChart from "./d3-visualization/MakeMarkovChart";
 
 const RequestExecuter = ({ transactionId, handleBack }) => {
   const [protocolCalls, setProtocolCalls] = useState({});
@@ -220,7 +221,6 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
     const renderedResponse = call.businessPayload.map((item) => {
       return <ResponseField>{JSON.stringify(item)}</ResponseField>;
     });
-
     return (
       <OnPayloadContainer>
         {renderedResponse}
@@ -237,6 +237,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
             Copy Beckn Payload
           </SendButton>
         </ButtonContainer>
+        <MakeSlopeChart sessionData={protocolCalls} config={call.config} />
       </OnPayloadContainer>
     );
   };

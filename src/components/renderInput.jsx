@@ -3,12 +3,14 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { env } from "../env/env";
 import { FormFieldWrapper } from "../styled/renderInput.style";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useState } from "react";
 
+const exeptions = ["startStop", "endStop"];
 const RenderInput = ({ data, control, errors, watch }) => {
   const [selectOptions, setSelectOptions] = useState();
   const [formData, setFormData] = useState(watch());
+  // const fetched = useRef([]);
   useEffect(() => {
     getOptions();
   }, [data, formData]);
@@ -33,7 +35,10 @@ const RenderInput = ({ data, control, errors, watch }) => {
     if (data.type !== "select") {
       return;
     }
-
+    // if (fetched.current.includes(data.key) && !exeptions.includes(data.key)) {
+    //   return;
+    // }
+    // fetched.current.push(data.key);
     let replaceFieldValue = "";
 
     if (data.extractionPathReplaceWith) {
