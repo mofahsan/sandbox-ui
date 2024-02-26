@@ -22,7 +22,7 @@ const SessionForm = ({ updateStep }) => {
     version: "2.0.0",
     country: "",
     cityCode: "",
-    configName: "metro-flow-2",
+    configName: "metro-flow-1",
   });
   const [DialogOpen, setDialogOpen] = useState(false);
   useEffect(() => {
@@ -108,8 +108,8 @@ const SessionForm = ({ updateStep }) => {
                 onChange={handleInputChange}
               >
                 <option value="metro-flow-1">metro-flow-1</option>
-                <option value="metro-flow-2">metro without select call</option>
-                <option value="ondemand-flow-1">ondemand-flow-1</option>
+                {/* <option value="metro-flow-2">metro without select call</option>
+                <option value="ondemand-flow-1">ondemand-flow-1</option> */}
               </Select>
             </FormField>
 
