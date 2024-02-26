@@ -107,9 +107,9 @@ const SessionForm = ({ updateStep }) => {
                 value={formData.configName}
                 onChange={handleInputChange}
               >
-                {/* <option value="metro-flow-1">metro-flow-1</option> */}
+                <option value="metro-flow-1">metro-flow-1</option>
                 <option value="metro-flow-2">metro without select call</option>
-                {/* <option value="ondemand-flow-1">ondemand-flow-1</option> */}
+                <option value="ondemand-flow-1">ondemand-flow-1</option>
               </Select>
             </FormField>
 

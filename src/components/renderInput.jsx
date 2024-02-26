@@ -2,7 +2,13 @@ import { Controller } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { env } from "../env/env";
-import { FormFieldWrapper } from "../styled/renderInput.style";
+import {
+  FormFieldWrapper,
+  LabelContainer,
+  InfoIconWrapper,
+} from "../styled/renderInput.style";
+import Tooltip from "@mui/material/Tooltip";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
 
@@ -89,7 +95,18 @@ const RenderInput = ({ data, control, errors, watch }) => {
   if (data.type === "text") {
     return (
       <FormFieldWrapper>
-        <label htmlFor={data.key}>{data.name}</label>
+        <LabelContainer>
+          <label htmlFor={data.key}>{data.name}</label>
+          <Tooltip title={data.summary}>
+            <InfoOutlinedIcon
+              style={{
+                height: "20px",
+                width: "20px",
+                color: "rgb(152 152 152)",
+              }}
+            />
+          </Tooltip>
+        </LabelContainer>
         <Controller
           name={data.key}
           control={control}
@@ -107,7 +124,18 @@ const RenderInput = ({ data, control, errors, watch }) => {
   } else if (data.type === "select") {
     return (
       <FormFieldWrapper>
-        <label htmlFor={data.key}>{data.name}</label>
+        <LabelContainer>
+          <label htmlFor={data.key}>{data.name}</label>
+          <Tooltip title={data.summary}>
+            <InfoOutlinedIcon
+              style={{
+                height: "20px",
+                width: "20px",
+                color: "rgb(152 152 152)",
+              }}
+            />
+          </Tooltip>
+        </LabelContainer>
         <Controller
           name={data.key}
           control={control}
@@ -136,7 +164,18 @@ const RenderInput = ({ data, control, errors, watch }) => {
   } else if (data.type === "multiline") {
     return (
       <FormFieldWrapper>
-        <label htmlFor={data.key}>{data.name}</label>
+        <LabelContainer>
+          <label htmlFor={data.key}>{data.name}</label>
+          <Tooltip title={data.summary}>
+            <InfoOutlinedIcon
+              style={{
+                height: "20px",
+                width: "20px",
+                color: "rgb(152 152 152)",
+              }}
+            />
+          </Tooltip>
+        </LabelContainer>
         <Controller
           name={data.key}
           control={control}
