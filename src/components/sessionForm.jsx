@@ -14,6 +14,7 @@ import { env } from "../env/env";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { useEffect } from "react";
+import JourneyDialog from "./JourneyUI/JourneyPage";
 
 const SessionForm = ({ updateStep }) => {
   const [transcations, setTransactions] = useState([]);
@@ -23,7 +24,7 @@ const SessionForm = ({ updateStep }) => {
     cityCode: "",
     configName: "metro-flow-2",
   });
-
+  const [DialogOpen, setDialogOpen] = useState(false);
   useEffect(() => {
     getSessions();
   }, []);
