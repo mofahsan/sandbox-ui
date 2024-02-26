@@ -17,13 +17,21 @@ import {
   FormContainer,
   ButtonContainer,
   OnPayloadContainer,
+  IconsContainer,
+  TitleInfo,
 } from "../styled/requestExecuter.style";
 import RenderInput from "./renderInput";
 import { useEffect } from "react";
+import MakeSlopeChart from "./d3-visualization/MakeMarkovChart";
+import ReplayIcon from "@mui/icons-material/Replay";
+import Collapse from "@mui/material/Collapse";
 
 const RequestExecuter = ({ transactionId, handleBack }) => {
   const [protocolCalls, setProtocolCalls] = useState({});
   const [inputFieldsData, setInputFieldsData] = useState({});
+  const [session, setSession] = useState(null);
+  const [additionalFlows, setAdditionalFlows] = useState(null);
+  const [showAddRequestButton, setShowAddRequestButton] = useState(false);
   const [showError, setShowError] = useState(false);
   const requestCount = useRef(0);
   const {
@@ -66,6 +74,8 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
   }, [protocolCalls]);
 
   const sessionTimeout = async (config) => {
+    setShowAddRequestButton(false);
+
     try {
       const header = {};
       header.headers = {
@@ -88,6 +98,8 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
   };
 
   const getSession = async () => {
+    setShowAddRequestButton(false);
+
     try {
       const header = {};
       header.headers = {
@@ -100,6 +112,8 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
         header
       );
 
+      setSession(res.data);
+      setAdditionalFlows(res.data.additioalFlows);
       setInputFieldsData(res.data.input);
       setProtocolCalls(res.data.protocolCalls);
     } catch (e) {
@@ -220,7 +234,6 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
     const renderedResponse = call.businessPayload.map((item) => {
       return <ResponseField>{JSON.stringify(item)}</ResponseField>;
     });
-
     return (
       <OnPayloadContainer>
         {renderedResponse}
@@ -242,7 +255,8 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
   };
 
   const sendRequest = async (e, call) => {
-    // const data = getData(call.config);
+    setShowAddRequestButton(false);
+
     const data = {};
     Object.entries(e).map((item) => {
       const [key, value] = item;
@@ -272,9 +286,63 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
         header
       );
 
+      setSession(res.data.session);
       setProtocolCalls(res.data.session.protocolCalls);
     } catch (e) {
       console.log("Error while fetching session data", e);
+      toast.error(JSON.stringify(e.response.data));
+    }
+  };
+
+  const replayTranscation = async (type) => {
+    setShowAddRequestButton(false);
+
+    try {
+      const header = {};
+      header.headers = {
+        ...header.headers,
+        "Content-Type": "application/json",
+      };
+
+      const res = await axios.post(
+        `${env.sandBox}/mapper/repeat`,
+        JSON.stringify({
+          transactionId: transactionId,
+          callType: type,
+        }),
+        header
+      );
+
+      setProtocolCalls(res.data.session.protocolCalls);
+    } catch (e) {
+      console.log("Error while calling mapper.repeat", e);
+      toast.error(JSON.stringify(e.response.data));
+    }
+  };
+
+  const addFlow = async () => {
+    setShowAddRequestButton(false);
+
+    try {
+      const header = {};
+      header.headers = {
+        ...header.headers,
+        "Content-Type": "application/json",
+      };
+
+      const res = await axios.post(
+        `${env.sandBox}/mapper/addFlow`,
+        JSON.stringify({
+          configName: "metro-cancel-flow-1",
+          transactionId: transactionId,
+        }),
+        header
+      );
+
+      setProtocolCalls(res.data.session.protocolCalls);
+      setInputFieldsData(res.data.session.input);
+    } catch (e) {
+      console.log("Error while calling mapper.repeat", e);
       toast.error(JSON.stringify(e.response.data));
     }
   };
@@ -295,8 +363,30 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
             width={15}
             height={15}
           />
-          <h2>TransactionID: {transactionId}</h2>
+          <h2>{session?.configName}</h2>
         </TitleHeading>
+        <TitleInfo>
+          <div>
+            <small>Transaction ID :</small>
+            <p>{transactionId}</p>
+          </div>
+          <div>
+            <small>Domain :</small>
+            <p>{session?.domain}</p>
+          </div>
+          <div>
+            <small>Versoin :</small>
+            <p>{session?.version}</p>
+          </div>
+          <div>
+            <small>Country :</small>
+            <p>{session?.cityCode}</p>
+          </div>
+          <div>
+            <small>City :</small>
+            <p>{session?.country}</p>
+          </div>
+        </TitleInfo>
       </TitleContainer>
 
       {Object.entries(protocolCalls).map((data) => {
@@ -305,15 +395,20 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
         if (call.shouldRender) {
           return (
             <Container>
-              <CardHeader rotation={call.isCollapsed ? 270 : 90}>
+              <CardHeader>
                 <HeadingWrapper>{call.config}</HeadingWrapper>
-                <img
-                  onClick={() => toggleCollapse(call)}
-                  src={BackIcon}
-                  alt="Description"
-                  width={10}
-                  height={10}
-                />
+                <IconsContainer rotation={call.isCollapsed ? 270 : 90}>
+                  {!call.type.startsWith("on_") && (
+                    <ReplayIcon onClick={() => replayTranscation(call.type)} />
+                  )}
+                  <img
+                    onClick={() => toggleCollapse(call)}
+                    src={BackIcon}
+                    alt="Description"
+                    width={10}
+                    height={10}
+                  />
+                </IconsContainer>
               </CardHeader>
               <CardBody isCollapsed={call.isCollapsed}>
                 {call.type.startsWith("on_") ? (
@@ -324,7 +419,9 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
                   </>
                 ) : (
                   <FormContainer
-                    onSubmit={handleSubmit((data) => sendRequest(data, call))}
+                    onSubmit={handleSubmit((data) => {
+                      sendRequest(data, call);
+                    })}
                   >
                     {inputFieldsData[call.config].map((item) => (
                       <RenderInput
@@ -335,6 +432,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
                             item.defaultValue,
                           businessPayload:
                             protocolCalls[call.preRequest]?.businessPayload,
+                          session: session,
                         }}
                         control={control}
                         errors={errors}
@@ -360,10 +458,17 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
                   </FormContainer>
                 )}
               </CardBody>
+              {/* {call.nextRequest === null &&
+                additionalFlows &&
+                call.becknPayload && (
+                  <button onClick={addFlow}>add flow</button>
+                )} */}
             </Container>
           );
         }
       })}
+
+      {showAddRequestButton && <>Add Request</>}
     </Wrapper>
   );
 };

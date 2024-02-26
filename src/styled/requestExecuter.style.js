@@ -48,8 +48,9 @@ export const ResponseField = styled.div`
 export const TitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center; */
   gap: 10px;
+  flex-direction: column;
 
   & > p {
     margin: 0px;
@@ -58,13 +59,37 @@ export const TitleContainer = styled.div`
 
 export const TitleHeading = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
   gap: 10px;
 
   & > h2 {
     padding: 0px;
     margin: 0px;
+  }
+`;
+
+export const TitleInfo = styled.div`
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  padding: 10px 10px;
+  flex-direction: column;
+  gap: 10px;
+
+  & > div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    & > small {
+      color: grey;
+    }
+
+    & > p {
+      font-weight: bold;
+      margin: 0px;
+      padding: 0px;
+    }
   }
 `;
 
@@ -95,10 +120,6 @@ export const CardHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-
-  & > img {
-    transform: rotate(${({ rotation }) => rotation}deg);
-  }
 `;
 
 export const CardBody = styled.div`
@@ -128,4 +149,16 @@ export const OnPayloadContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+`;
+
+export const IconsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+
+  & > img {
+    transform: rotate(${({ rotation }) => rotation}deg);
+  }
 `;

@@ -16,4 +16,27 @@ export const FormFieldWrapper = styled.div`
   & > p {
     color: red;
   }
+
+  & > label::after {
+    content: "*";
+    color: red;
+  }
+`;
+
+export const LabelContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+  align-items: center;
+
+  & > label::after {
+    content: "*";
+    color: red;
+  }
+`;
+
+export const InfoIconWrapper = styled.div`
+  opacity: 0.8;
+  height: 20px;
+  width: 20px;
 `;

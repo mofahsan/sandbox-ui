@@ -14,6 +14,7 @@ import { env } from "../env/env";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { useEffect } from "react";
+import JourneyDialog from "./JourneyUI/JourneyPage";
 
 const SessionForm = ({ updateStep }) => {
   const [transcations, setTransactions] = useState([]);
@@ -21,9 +22,9 @@ const SessionForm = ({ updateStep }) => {
     version: "2.0.0",
     country: "",
     cityCode: "",
-    configName: "metro-flow-2",
+    configName: "metro-flow-1",
   });
-
+  const [DialogOpen, setDialogOpen] = useState(false);
   useEffect(() => {
     getSessions();
   }, []);
@@ -106,9 +107,9 @@ const SessionForm = ({ updateStep }) => {
                 value={formData.configName}
                 onChange={handleInputChange}
               >
-                {/* <option value="metro-flow-1">metro-flow-1</option> */}
-                <option value="metro-flow-2">metro without select call</option>
-                {/* <option value="ondemand-flow-1">ondemand-flow-1</option> */}
+                <option value="metro-flow-1">metro-flow-1</option>
+                {/* <option value="metro-flow-2">metro without select call</option>
+                <option value="ondemand-flow-1">ondemand-flow-1</option> */}
               </Select>
             </FormField>
 
