@@ -1,70 +1,118 @@
-  import { useState, useRef} from "react";
+import { useState, useRef } from "react";
 
+import axios from "../libs/http";
 
+import Payload from "./showPayload";
+import NewRequset from "./newRequest";
+import PayloadMapper from "./payloadMapper";
 
-  import axios  from "../libs/http";
- 
-  import Payload from "./showPayload";
-  import NewRequset from "./newRequest";
-  import PayloadMapper  from "./payloadMapper";
+import { NewRequestDiv, NewRequestbutton } from "../styled/section";
+import { JourneySection } from "./JourneyUI/JourneySection";
 
+function Section() {
+  const [newRequestContainer, setRequestContainer] = useState("RequestTracer");
+  const [transaction_id, settransaction_id] = useState([]); //transactionId_list
 
-  import {NewRequestDiv,NewRequestbutton} from "../styled/section"
+  const [transaction_id_data, settransaction_id_data] = useState([]); //transactionId data
+  let transactionid_variable = useRef();
 
-
-
-
-  function Section(){
-    const [newRequestContainer,setRequestContainer]=useState('RequestTracer')
-    const [transaction_id, settransaction_id] = useState([])  //transactionId_list
-
-    const [transaction_id_data, settransaction_id_data] = useState([]) //transactionId data
-    let transactionid_variable = useRef();
-
-    async function getTransactionIdData (transaction_id){
-      transactionid_variable.current = transaction_id
-      const data = await axios.get("/cache?transactionid="+transaction_id)
-      settransaction_id_data(data.data)
+  async function getTransactionIdData(transaction_id) {
+    transactionid_variable.current = transaction_id;
+    const data = await axios.get("/cache?transactionid=" + transaction_id);
+    settransaction_id_data(data.data);
   }
 
-    const CallNewReqest=(containerName)=>{ // RequestTracer || NewRequest
-      setRequestContainer(containerName)
-    }
-    async function getTransactionId (){
-      const data = await axios.get("/cache")
+  const CallNewReqest = (containerName) => {
+    // RequestTracer || NewRequest
+    setRequestContainer(containerName);
+  };
+  async function getTransactionId() {
+    const data = await axios.get("/cache");
 
-      // filter json mapper transaction id
-      const filteredTranscationId = data?.data?.filter(item => !item.startsWith("jm_"))
+    // filter json mapper transaction id
+    const filteredTranscationId = data?.data?.filter(
+      (item) => !item.startsWith("jm_")
+    );
 
-      settransaction_id(filteredTranscationId)
+    settransaction_id(filteredTranscationId);
   }
 
+  return (
+    <div className="container">
+      <NewRequestDiv>
+        <NewRequestbutton
+          active={newRequestContainer === "RequestTracer"}
+          onClick={() => {
+            CallNewReqest("RequestTracer");
+            getTransactionIdData(transactionid_variable.current);
+          }}
+        >
+          Request Tracer
+        </NewRequestbutton>
+        <NewRequestbutton
+          onClick={() => {
+            CallNewReqest("NewRequest");
+          }}
+          active={newRequestContainer === "NewRequest"}
+        >
+          New Request
+        </NewRequestbutton>
+        <NewRequestbutton
+          onClick={() => {
+            CallNewReqest("PayloadMapper");
+          }}
+          active={newRequestContainer === "PayloadMapper"}
+        >
+          Buyer Mock
+        </NewRequestbutton>
+        <NewRequestbutton
+          onClick={() => {
+            CallNewReqest("JourneySection");
+          }}
+          active={newRequestContainer === "JourneySection"}
+        >
+          Request Flow
+        </NewRequestbutton>
+      </NewRequestDiv>
 
-  
-  
-    return(
-      <div className="container">
-        <NewRequestDiv>
-            <NewRequestbutton   active={newRequestContainer === 'RequestTracer'}
-            onClick={()=>{CallNewReqest('RequestTracer')
-            getTransactionIdData(transactionid_variable.current)}}>Request Tracer</NewRequestbutton>
-            <NewRequestbutton onClick={()=>{CallNewReqest('NewRequest')}}  active={newRequestContainer === 'NewRequest'}>New Request</NewRequestbutton>
-            <NewRequestbutton onClick={()=>{CallNewReqest('PayloadMapper')}}  active={newRequestContainer === 'PayloadMapper'}>Buyer Mock</NewRequestbutton>
-
-        </NewRequestDiv>
-
-        <div style={{display:newRequestContainer === 'RequestTracer'?'block':'none'}}> < Payload props={{getTransactionIdData:getTransactionIdData,transaction_id_data:transaction_id_data,getTransactionId:getTransactionId,transaction_id:transaction_id}} /> </div>
-        <div style={{display:newRequestContainer === 'NewRequest'?'block':'none'}}><NewRequset/></div>
-        <div style={{display:newRequestContainer === 'PayloadMapper'?'block':'none'}}><PayloadMapper/></div>
-
-
-
+      <div
+        style={{
+          display: newRequestContainer === "RequestTracer" ? "block" : "none",
+        }}
+      >
+        {" "}
+        <Payload
+          props={{
+            getTransactionIdData: getTransactionIdData,
+            transaction_id_data: transaction_id_data,
+            getTransactionId: getTransactionId,
+            transaction_id: transaction_id,
+          }}
+        />{" "}
       </div>
+      <div
+        style={{
+          display: newRequestContainer === "NewRequest" ? "block" : "none",
+        }}
+      >
+        <NewRequset />
+      </div>
+      <div
+        style={{
+          display: newRequestContainer === "PayloadMapper" ? "block" : "none",
+        }}
+      >
+        <PayloadMapper />
+      </div>
+      <div
+        style={{
+          display: newRequestContainer === "JourneySection" ? "block" : "none",
+        }}
+      >
+        <JourneySection containerName={newRequestContainer} />
+      </div>
+    </div>
+  );
+}
 
-
-    )
-  }
-
-
-
-    export default Section;
+export default Section;

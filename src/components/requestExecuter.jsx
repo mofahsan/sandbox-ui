@@ -237,7 +237,6 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
             Copy Beckn Payload
           </SendButton>
         </ButtonContainer>
-        <MakeSlopeChart sessionData={protocolCalls} config={call.config} />
       </OnPayloadContainer>
     );
   };
@@ -272,7 +271,6 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
         }),
         header
       );
-
       setProtocolCalls(res.data.session.protocolCalls);
     } catch (e) {
       console.log("Error while fetching session data", e);
@@ -325,7 +323,9 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
                   </>
                 ) : (
                   <FormContainer
-                    onSubmit={handleSubmit((data) => sendRequest(data, call))}
+                    onSubmit={handleSubmit((data) => {
+                      sendRequest(data, call);
+                    })}
                   >
                     {inputFieldsData[call.config].map((item) => (
                       <RenderInput

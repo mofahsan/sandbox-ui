@@ -140,7 +140,7 @@ function Chart({ data, payloads, config }) {
       .selectAll("text")
       .data((i) =>
         d3.zip(
-          data.map(i ? (d) => `` : (d) => `${d.country}`),
+          data.map(i ? (d) => `` : (d) => `${GetLabel(d.country, payloads)}`),
           dodge(data.map((d) => y(d[i ? endLine : startLine])))
         )
       )
@@ -184,7 +184,7 @@ function Chart({ data, payloads, config }) {
           .attr("y", ([, y]) => y - 13)
           .style("font-size", (d) => 18 + "px");
       });
-  }, [data, prevData, payloads]);
+  }, [data, prevData, payloads, config]);
   //, prevData, payloads
   return (
     <>
@@ -192,6 +192,17 @@ function Chart({ data, payloads, config }) {
       <TransitionsModal open={open} setOpen={setOpen} data={expandData} />
     </>
   );
+}
+
+function GetLabel(title, sessionData) {
+  if (title.startsWith("on_")) {
+    console.log(sessionData);
+    if (sessionData[title].businessPayload.length > 1) {
+      return title + `(${sessionData[title].businessPayload.length})`;
+    }
+    // console.log(sessionData[title]);
+  }
+  return title;
 }
 
 function GenrateArrowHeads(svg) {
@@ -262,8 +273,8 @@ function dodge(positions, separation = 10, maxiter = 10, maxerror = 1e-1) {
 }
 
 function GetPayloadFor(title, sessionData, config) {
-  title = title.trim();
-  console.log(sessionData);
+  title = removeNumPattern(title.trim());
+  // console.log(sessionData);
   if (title === "ACK_buyer") {
     return sessionData[config].becknResponse;
   }
@@ -272,7 +283,11 @@ function GetPayloadFor(title, sessionData, config) {
   }
   return sessionData[title].becknPayload;
 }
-
+function removeNumPattern(input) {
+  var pattern = /\(\d+\)/g;
+  var result = input.replace(pattern, "");
+  return result;
+}
 function GenrateNewGraphData(data, current) {
   // const currentAPI = apiList.indexOf(current);
   // if (currentAPI >= apiList.length) return data;
@@ -283,24 +298,28 @@ function GenrateNewGraphData(data, current) {
     BuyerApp: num - 1 * step,
     SellerApp: num - 1 * step,
     country: current,
+    id: current,
     arrowStart: false,
   };
   const item2 = {
     BuyerApp: num - 2 * step,
     SellerApp: num - 2 * step,
     country: "ACK_seller",
+    id: "ACK_seller",
     arrowStart: true,
   };
   const item3 = {
     BuyerApp: num - 3 * step,
     SellerApp: num - 3 * step,
     country: `on_${current}`,
+    id: `on_${current}`,
     arrowStart: true,
   };
   const item4 = {
     BuyerApp: num - 4 * step,
     SellerApp: num - 4 * step,
     country: "ACK_buyer",
+    id: "ACK_buyer",
     arrowStart: false,
   };
   return [...data, item1, item2, item3, item4];

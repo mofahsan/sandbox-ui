@@ -34,7 +34,7 @@ export default function TransitionsModal({ open, setOpen, data }) {
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
         fullWidth={true}
-        maxWidth="xl"
+        maxWidth="md"
       >
         <DialogTitle id="scroll-dialog-title">{data.title}</DialogTitle>
         <DialogContent dividers={scroll === "paper"}>
