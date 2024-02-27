@@ -72,7 +72,7 @@ const RenderInput = ({ data, control, errors, watch }) => {
         `${env.sandBox}/mapper/extractPath`,
         JSON.stringify({
           path: path,
-          obj: data,
+          obj: { businessPayload: data.businessPayload },
         }),
         header
       );

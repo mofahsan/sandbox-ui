@@ -363,7 +363,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
             width={15}
             height={15}
           />
-          <h2>{session?.configName}</h2>
+          <h2>{session?.summary}</h2>
         </TitleHeading>
         <TitleInfo>
           <div>
