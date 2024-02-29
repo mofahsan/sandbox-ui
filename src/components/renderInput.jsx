@@ -23,6 +23,7 @@ const RenderInput = ({ data, control, errors, watch }) => {
 
   useEffect(() => {
     const subscription = watch((value) => {
+      console.log(">>>>>>", data.config, data.currentConfig);
       setFormData(value);
     });
     return () => subscription.unsubscribe();
@@ -39,6 +40,10 @@ const RenderInput = ({ data, control, errors, watch }) => {
 
   const getOptions = async () => {
     if (data.type !== "select") {
+      return;
+    }
+
+    if (data.config !== data.currentConfig) {
       return;
     }
     // if (fetched.current.includes(data.key) && !exeptions.includes(data.key)) {

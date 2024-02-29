@@ -32,6 +32,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
   const [session, setSession] = useState(null);
   const [additionalFlows, setAdditionalFlows] = useState(null);
   const [showAddRequestButton, setShowAddRequestButton] = useState(false);
+  const [currentConfig, setCurrentConfig] = useState("");
   const [showError, setShowError] = useState(false);
   const requestCount = useRef(0);
   const {
@@ -50,6 +51,10 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
     let stopMapper = false;
     Object.entries(protocolCalls).map((data) => {
       const [, call] = data;
+      if (call.shouldRender === true && call.executed === false) {
+        console.log("Cuurent comnfig", call.config);
+        setCurrentConfig(call.config);
+      }
       if (firstPayload || stopMapper) return null;
       if (!call.type.startsWith("on_") && !call.businessPayload) {
         requestCount.current = 0;
@@ -427,6 +432,8 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
                       <RenderInput
                         data={{
                           ...item,
+                          config: call.config,
+                          currentConfig: currentConfig,
                           defaultValue:
                             call?.businessPayload?.[item.key] ||
                             item.defaultValue,
