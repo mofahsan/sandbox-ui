@@ -20,8 +20,7 @@ const SessionForm = ({ updateStep }) => {
   const [transcations, setTransactions] = useState([]);
   const [flows, setFlows] = useState([]);
   const [formData, setFormData] = useState({
-    version: "2.0.0",
-    country: "",
+    country: "IND",
     cityCode: "",
     configName: "",
   });
@@ -105,19 +104,6 @@ const SessionForm = ({ updateStep }) => {
         <h2>Session Data</h2>
         <form onSubmit={handleSubmit}>
           <FormContainer>
-            <FormField>
-              <Label htmlFor="version">Version:</Label>
-              <Select
-                id="version"
-                name="version"
-                value={formData.version}
-                onChange={handleInputChange}
-              >
-                <option value="1.0.0">1.0.0</option>
-                <option value="2.0.0">2.0.0</option>
-              </Select>
-            </FormField>
-
             <FormField>
               <Label htmlFor="config">Flow:</Label>
               <Select

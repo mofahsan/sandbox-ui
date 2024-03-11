@@ -32,6 +32,7 @@ export const LabelContainer = styled.div`
   & > label::after {
     content: "*";
     color: red;
+    display: ${({ isRequired }) => (isRequired ? "inline" : "none")};
   }
 `;
 
