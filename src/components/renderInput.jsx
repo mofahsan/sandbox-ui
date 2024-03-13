@@ -15,6 +15,7 @@ import { useState } from "react";
 const exeptions = ["startStop", "endStop"];
 const RenderInput = ({ data, control, errors, watch }) => {
   const [selectOptions, setSelectOptions] = useState();
+  const [url, setUrl] = useState("");
   const [formData, setFormData] = useState(watch());
   // const fetched = useRef([]);
   useEffect(() => {
@@ -38,7 +39,11 @@ const RenderInput = ({ data, control, errors, watch }) => {
   };
 
   const getOptions = async () => {
-    if (data.type !== "select") {
+    if (data.type !== "select" && data.type !== "form") {
+      return;
+    }
+
+    if (data.config !== data.currentConfig) {
       return;
     }
     // if (fetched.current.includes(data.key) && !exeptions.includes(data.key)) {
@@ -77,14 +82,19 @@ const RenderInput = ({ data, control, errors, watch }) => {
         header
       );
 
-      const filteredOptions = res.data.response.data.filter(
+      const filteredOptions = res.data.response?.data?.filter(
         (obj, index, self) => index === self.findIndex((t) => t.key === obj.key)
       );
 
-      setSelectOptions(filteredOptions);
+      if (data.type === "select") {
+        setSelectOptions(filteredOptions);
+      } else if (data.type === "form") {
+        console.log("filterd Options", filteredOptions);
+        setUrl(filteredOptions?.[0]?.value);
+      }
     } catch (e) {
       console.log("Error while fetching option", e);
-      toast.error(JSON.stringify(e.response.data));
+      toast.error(JSON.stringify(e?.response?.data));
     }
   };
 
@@ -95,7 +105,7 @@ const RenderInput = ({ data, control, errors, watch }) => {
   if (data.type === "text") {
     return (
       <FormFieldWrapper>
-        <LabelContainer>
+        <LabelContainer isRequired={data.required}>
           <label htmlFor={data.key}>{data.name}</label>
           <Tooltip title={data.summary}>
             <InfoOutlinedIcon
@@ -124,7 +134,7 @@ const RenderInput = ({ data, control, errors, watch }) => {
   } else if (data.type === "select") {
     return (
       <FormFieldWrapper>
-        <LabelContainer>
+        <LabelContainer isRequired={data.required}>
           <label htmlFor={data.key}>{data.name}</label>
           <Tooltip title={data.summary}>
             <InfoOutlinedIcon
@@ -140,7 +150,7 @@ const RenderInput = ({ data, control, errors, watch }) => {
           name={data.key}
           control={control}
           defaultValue={data?.defaultValue}
-          rules={{ required: data.errorText }}
+          rules={{ required: data.required && data.errorText }}
           render={({ field }) => (
             <>
               <select {...field}>
@@ -164,7 +174,7 @@ const RenderInput = ({ data, control, errors, watch }) => {
   } else if (data.type === "multiline") {
     return (
       <FormFieldWrapper>
-        <LabelContainer>
+        <LabelContainer isRequired={data.required}>
           <label htmlFor={data.key}>{data.name}</label>
           <Tooltip title={data.summary}>
             <InfoOutlinedIcon
@@ -194,6 +204,30 @@ const RenderInput = ({ data, control, errors, watch }) => {
           )}
         />
       </FormFieldWrapper>
+    );
+  } else if (data.type === "form") {
+    return (
+      <>
+        <LabelContainer isRequired={data.required}>
+          <label>{data.name}</label>
+          <Tooltip title={data.summary}>
+            <InfoOutlinedIcon
+              style={{
+                height: "20px",
+                width: "20px",
+                color: "rgb(152 152 152)",
+              }}
+            />
+          </Tooltip>
+        </LabelContainer>
+        {url ? (
+          <a href={url} target="_blank" rel="noreferrer">
+            {url}
+          </a>
+        ) : (
+          <div> Select bpp_id and bpp_uri to view the url</div>
+        )}
+      </>
     );
   }
 };

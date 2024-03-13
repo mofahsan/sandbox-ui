@@ -18,16 +18,34 @@ import JourneyDialog from "./JourneyUI/JourneyPage";
 
 const SessionForm = ({ updateStep }) => {
   const [transcations, setTransactions] = useState([]);
+  const [flows, setFlows] = useState([]);
   const [formData, setFormData] = useState({
-    version: "2.0.0",
-    country: "",
+    country: "IND",
     cityCode: "",
-    configName: "metro-flow-1",
+    configName: "",
   });
-  const [DialogOpen, setDialogOpen] = useState(false);
   useEffect(() => {
     getSessions();
+    getFlows();
   }, []);
+
+  const getFlows = async () => {
+    try {
+      const header = {};
+      header.headers = {
+        ...header.headers,
+        "Content-Type": "application/json",
+      };
+
+      const res = await axios.get(`${env.sandBox}/mapper/flows`, header);
+
+      console.log("response", res.data);
+      setFlows(res.data.data);
+    } catch (e) {
+      console.log("Error while fetching flows data", e);
+      toast.error(JSON.stringify(e?.response?.data));
+    }
+  };
 
   const getSessions = async () => {
     try {
@@ -43,7 +61,7 @@ const SessionForm = ({ updateStep }) => {
       setTransactions(res.data);
     } catch (e) {
       console.log("Error while fetching session data", e);
-      toast.error(JSON.stringify(e.response.data));
+      toast.error(JSON.stringify(e?.response?.data));
     }
   };
 
@@ -87,33 +105,18 @@ const SessionForm = ({ updateStep }) => {
         <form onSubmit={handleSubmit}>
           <FormContainer>
             <FormField>
-              <Label htmlFor="version">Version:</Label>
-              <Select
-                id="version"
-                name="version"
-                value={formData.version}
-                onChange={handleInputChange}
-              >
-                <option value="1.0.0">1.0.0</option>
-                <option value="2.0.0">2.0.0</option>
-              </Select>
-            </FormField>
-
-            <FormField>
               <Label htmlFor="config">Flow:</Label>
               <Select
                 id="config"
                 name="configName"
-                value={formData.configName}
                 onChange={handleInputChange}
               >
-                <option value="metro-flow-1">
-                  Metro - Station Code Based Flow
+                <option selected="selected" disabled="disabled">
+                  select value
                 </option>
-                <option value="metro-flow-2">
-                  Metro - Station Code Based Flow(without select call)
-                </option>
-                {/* <option value="ondemand-flow-1">ondemand-flow-1</option> */}
+                {flows.map((flow) => {
+                  return <option value={flow.value}>{flow.key}</option>;
+                })}
               </Select>
             </FormField>
 
