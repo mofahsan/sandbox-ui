@@ -39,7 +39,6 @@ const RenderInput = ({ data, control, errors, watch }) => {
   };
 
   const getOptions = async () => {
-    console.log("dataType", data.type, formData);
     if (data.type !== "select" && data.type !== "form") {
       return;
     }
@@ -99,7 +98,7 @@ const RenderInput = ({ data, control, errors, watch }) => {
     }
   };
 
-  console.log("data", data);
+  // console.log("data", data);
   // console.log("sleectOPts", selectOptions);
   // console.log("formaDat", formData);
 
@@ -151,7 +150,7 @@ const RenderInput = ({ data, control, errors, watch }) => {
           name={data.key}
           control={control}
           defaultValue={data?.defaultValue}
-          rules={{ required: data.errorText }}
+          rules={{ required: data.required && data.errorText }}
           render={({ field }) => (
             <>
               <select {...field}>
