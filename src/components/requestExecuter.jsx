@@ -149,7 +149,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
     return (
       <OnPayloadContainer>
         {renderedResponse}
-        <ButtonContainer>
+        {/* <ButtonContainer>
           <SendButton
             disabled={!call?.becknPayload}
             onClick={() => {
@@ -161,7 +161,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
           >
             Copy Beckn Payload
           </SendButton>
-        </ButtonContainer>
+        </ButtonContainer> */}
       </OnPayloadContainer>
     );
   };
@@ -202,7 +202,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
       setProtocolCalls(res.data.session.protocolCalls);
     } catch (e) {
       console.log("Error while fetching session data", e);
-      toast.error(JSON.stringify(e.response.data));
+      toast.error(JSON.stringify(e?.response));
     }
   };
 
@@ -311,7 +311,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
                 />
               ))}
               <ButtonContainer>
-                <SendButton
+                {/* <SendButton
                   disabled={!call?.becknPayload || call.type === "form"}
                   onClick={() => {
                     navigator.clipboard.writeText(
@@ -321,7 +321,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
                   }}
                 >
                   Copy Beckn Payload
-                </SendButton>
+                </SendButton> */}
                 <SendButton disabled={call.executed} type="submit">
                   {call.type === "form" ? "Continue" : "Send"}
                 </SendButton>
