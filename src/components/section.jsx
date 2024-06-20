@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import PayloadMapper from "./payloadMapper";
+import PayloadMapperSeller from "./payloadMapperSeller"
 import { NewRequestDiv, NewRequestbutton } from "../styled/section";
 import { JourneySection } from "./JourneyUI/JourneySection";
 
@@ -20,6 +21,14 @@ function Section() {
         </NewRequestbutton>
         <NewRequestbutton
           onClick={() => {
+            setRequestContainer("PayloadMapperSeller");
+          }}
+          active={newRequestContainer === "PayloadMapperSeller"}
+        >
+          Seller Mock
+        </NewRequestbutton>
+        <NewRequestbutton
+          onClick={() => {
             setRequestContainer("JourneySection");
           }}
           active={newRequestContainer === "JourneySection"}
@@ -30,7 +39,7 @@ function Section() {
 
       <div
         style={{
-          display: newRequestContainer === "PayloadMapper" ? "block" : "none",
+          display: newRequestContainer === "PayloadMapper"  ? "block" : "none",
         }}
       >
         <PayloadMapper />
@@ -41,6 +50,13 @@ function Section() {
         }}
       >
         <JourneySection containerName={newRequestContainer} />
+      </div>
+      <div
+        style={{
+          display: newRequestContainer === "PayloadMapperSeller" ? "block" : "none",
+        }}
+      >
+        <PayloadMapperSeller containerName={newRequestContainer} />
       </div>
     </div>
   );
