@@ -44,6 +44,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
     watch,
   } = useForm();
 
+  console.log(inputFieldsData,"inputFieldsData")
   useEffect(() => {
     getSession();
   }, [transactionId]);
@@ -57,6 +58,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
         setCurrentConfig(call.config);
       }
       if (firstPayload || stopMapper) return null;
+      // if the call isn't on return the function with assigned values
       if (!call.type.startsWith("on_") && !call.businessPayload) {
         requestCount.current = 0;
         stopMapper = true;
@@ -64,17 +66,19 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
       if (!call.type.startsWith("on_") || call.businessPayload) {
         return null;
       }
+      // first payload true if isn't on
       firstPayload = true;
+
       const session = setTimeout(() => {
         getSession();
         requestCount.current += 1;
       }, 3000);
-      if (requestCount.current > 2) {
-        clearTimeout(session);
-        toast.error("Response timeout");
-        sessionTimeout(call.config);
-        setShowError(true);
-      }
+      // if (requestCount.current > 2) {
+      //   clearTimeout(session);
+      //   toast.error("Response timeout");
+      //   sessionTimeout(call.config);
+      //   setShowError(true);
+      // }
       return null;
     });
   }, [protocolCalls]);
@@ -274,7 +278,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
         <CardHeader>
           <HeadingWrapper>{call.config}</HeadingWrapper>
           <IconsContainer rotation={call.isCollapsed ? 270 : 90}>
-            {!call.type.startsWith("on_") && (
+            {call.type.startsWith("on_") && (
               <ResetContainer onClick={() => replayTranscation(call.config)}>
                 <div>Reset</div>
                 <ReplayIcon />
@@ -290,7 +294,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
           </IconsContainer>
         </CardHeader>
         <CardBody isCollapsed={call.isCollapsed}>
-          {call.type.startsWith("on_") ? (
+          {!call.type.startsWith("on_") ? (
             <>
               {call.businessPayload ? displayOnCallData(call) : getOnCallData()}
             </>
@@ -300,7 +304,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
                 sendRequest(data, call);
               })}
             >
-              {inputFieldsData[call.config].map((item) => (
+              {inputFieldsData[call.config]?.map((item) => (
                 <RenderInput
                   data={{
                     ...item,
@@ -383,9 +387,11 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
       </TitleContainer>
 
       {Object.entries(protocolCalls).flatMap((data) => {
+        console.log(data,"is the data")
         const [key, call] = data;
 
         if (call.shouldRender && call.unsolicited) {
+          console.log(call,"is the call")
           return [
             renderRequestContainer(call.unsolicited),
             renderRequestContainer(call),
@@ -393,6 +399,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
         }
 
         if (call.shouldRender) {
+          console.log(call,"<----")
           return renderRequestContainer(call);
         }
       })}

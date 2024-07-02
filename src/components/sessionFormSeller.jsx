@@ -65,7 +65,8 @@ const SessionForm = ({ updateStep }) => {
         "Content-Type": "application/json",
       };
 
-      const res = await axios.get(`${env.sandBox}/cache?subscriberId=${subscriberId}`, header);
+      // const res = await axios.get(`${env.sandBox}/cache?subscriberId=${subscriberId}`, header);
+      const res = await axios.get(`${env.sandBox}/cache`, header); // fetch all subscriber id
 
       console.log("response", res.data);
       setTransactions(res.data);
@@ -114,7 +115,7 @@ const SessionForm = ({ updateStep }) => {
         <h2>Session Data</h2>
         <form onSubmit={handleSubmit}>
           <FormContainer>
-            <FormField>
+            {/* <FormField>
               <Label htmlFor="config">Flow:</Label>
               <Select
                 id="config"
@@ -170,7 +171,7 @@ const SessionForm = ({ updateStep }) => {
               }
                 
               </Select>
-            </FormField>
+            </FormField> */}
 
             <FormField>
               <Label htmlFor="subscriberId">Subscriber ID:</Label>

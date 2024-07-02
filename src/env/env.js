@@ -5,7 +5,18 @@
 // };
 
 // dev
+// export const env = {
+//   sandBox: "http://localhost:6200",
+//   mockServer: "http://localhost:5500",
+// };
+
 export const env = {
-  sandBox: "http://localhost:6100",
+  sandBox: "http://localhost:5502",
   mockServer: "http://localhost:5500",
 };
+// export const env = {
+//   sandBox: "https://fis-staging.ondc.org/pramaan-test-buyer-engine",
+//   mockServer: "http://localhost:5500",
+// };
+
+
