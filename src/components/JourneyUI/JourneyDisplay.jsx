@@ -66,7 +66,7 @@ export function JourneyDisplay({ selectedID, defaultOpen = null }) {
         <CircularProgress />
       </>
     );
-  console.log("HELLO", protocolCalls);
+  // console.log("HELLO", protocolCalls);
   return (
     <LayoutRoot>
       <LayoutContainer>

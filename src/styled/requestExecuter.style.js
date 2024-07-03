@@ -16,8 +16,8 @@ export const Container = styled.div`
 export const CallContainer = styled.div`
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  // border: 1px solid #ccc;
+  // border-radius: 5px;
   min-height: 50px;
   display: flex;
   justify-content: flex-start;
@@ -163,7 +163,7 @@ export const CardHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 0.5rem;
   border-bottom: 1px solid #ccc;
   background: linear-gradient(
     90deg,
@@ -171,7 +171,7 @@ export const CardHeader = styled.div`
     #f9f9f9
   ); /* Gradient background */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border-radius: 0px 0px 8px 8px;
+  border-radius: 8px 8px 8px 8px;
   cursor: pointer; /* Change cursor to pointer */
   transition: background 0.3s, border 0.3s, box-shadow 0.3s;
 
@@ -181,7 +181,6 @@ export const CardHeader = styled.div`
       #f9f9f9,
       #eaeaea
     ); /* Slight change in gradient on hover */
-    border: 1px solid #aaa; /* Slightly thicker border on hover */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Enhance shadow on hover */
   }
 `;
@@ -271,3 +270,22 @@ export const Message = styled.span`
 //     color: #007bff; // Change the color to your preference
 //   }
 // `;
+export const Arrow = styled.div`
+  text-align: center;
+  font-size: 40px;
+  color: #676767;
+`;
+
+export const PairHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: #ebf8ff;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 5px 5px 0px 0px;
+  border-top: 1px solid #676767;
+  border-left: 1px solid #676767;
+  border-right: 1px solid #676767;
+`;
