@@ -61,7 +61,7 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
       // if the call isn't on return the function with assigned values
       if (!call.type.startsWith("on_") && !call.businessPayload) {
         requestCount.current = 0;
-        stopMapper = true;
+        stopMapper = false;
       }
       if (!call.type.startsWith("on_") || call.businessPayload) {
         return null;
