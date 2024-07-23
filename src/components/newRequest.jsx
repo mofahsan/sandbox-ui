@@ -119,6 +119,10 @@ const generateHeader = async()=>{
       label: '/support',
       key: '/support',
     },
+    {
+      label: '/cancel',
+      key: '/cancel',
+    },
   ];
   
   const handleOption = (item) => {
