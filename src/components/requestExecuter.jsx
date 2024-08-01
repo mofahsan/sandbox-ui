@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { env } from "../env/env";
 import BackIcon from "../assets/png/back.png";
+import { v4 as uuidv4 } from "uuid";
 import {
   Container,
   HeadingWrapper,
@@ -172,6 +173,10 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
   };
 
   const sendRequest = async (e, call) => {
+
+    if(call.seller_unsolicited){
+       e.message_id = uuidv4()
+    }
     setIsLoading(true);
     setShowAddRequestButton(false);
 
@@ -194,7 +199,6 @@ const RequestExecuter = ({ transactionId, handleBack }) => {
         ...header.headers,
         "Content-Type": "application/json",
       };
-
       const res = await axios.post(
         `${env.sandBox}/mapper/${call.config}`,
         JSON.stringify({

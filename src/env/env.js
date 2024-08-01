@@ -11,7 +11,7 @@
 // };
 
 export const env = {
-  sandBox: "http://localhost:5502",
+  sandBox: "http://localhost:7202",
   mockServer: "http://localhost:5500",
 };
 // export const env = {
