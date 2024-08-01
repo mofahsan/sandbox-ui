@@ -11,14 +11,15 @@ function Section() {
   return (
     <div className="container">
       <NewRequestDiv>
-        <NewRequestbutton
+        {/* <NewRequestbutton
+          
           onClick={() => {
             setRequestContainer("PayloadMapper");
           }}
           active={newRequestContainer === "PayloadMapper"}
         >
           Buyer Mock
-        </NewRequestbutton>
+        </NewRequestbutton> */}
         <NewRequestbutton
           onClick={() => {
             setRequestContainer("PayloadMapperSeller");
