@@ -6,7 +6,9 @@ import { NewRequestDiv, NewRequestbutton } from "../styled/section";
 import { JourneySection } from "./JourneyUI/JourneySection";
 
 function Section() {
-  const [newRequestContainer, setRequestContainer] = useState("PayloadMapper");
+  // const [newRequestContainer, setRequestContainer] = useState("PayloadMapper");
+  const [newRequestContainer, setRequestContainer] = useState("PayloadMapperSeller");
+
 
   return (
     <div className="container">
@@ -28,14 +30,14 @@ function Section() {
         >
           Seller Mock
         </NewRequestbutton>
-        <NewRequestbutton
+        {/* <NewRequestbutton
           onClick={() => {
             setRequestContainer("JourneySection");
           }}
           active={newRequestContainer === "JourneySection"}
         >
           Request Flow
-        </NewRequestbutton>
+        </NewRequestbutton> */}
       </NewRequestDiv>
 
       <div
