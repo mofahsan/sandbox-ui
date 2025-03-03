@@ -1,6 +1,9 @@
+const REACT_APP_SANDBOX_BACKEND = process.env.REACT_APP_SANDBOX_BACKEND
+const REACT_APP_MOCK_SERVER = process.env.REACT_APP_MOCK_SERVER
+
 export const env={
-    sandBox:"https://fis-buyer-staging.ondc.org/api",
-    mockServer:"https://fis-seller-staging.ondc.org"
+    sandBox:REACT_APP_SANDBOX_BACKEND,
+    mockServer:"REACT_APP_MOCK_SERVER"
 }
 
 // export const env={
