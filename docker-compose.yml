@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: automation-api-service
+    container_name: sandbox_tracer_frontend
     ports:
       - "3000:80"
     env_file:
