@@ -5,9 +5,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: sandbox_tracer_frontend
+    container_name: ${CONTAINER_NAME}
     ports:
-      - "3000:80"
+      - "${PORT}:80"
     env_file:
       - .env
     restart: always
